@@ -1,0 +1,86 @@
+.mainWrapper {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: #111111;
+  position: relative;
+}
+
+.controlsWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0 .75rem;
+  background-color: #222222dd;
+  z-index: 999;
+  display: flex;
+  flex-direction: row;
+  border-radius: 3px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3rem;
+}
+
+.controlsWrapper>div:first-child {
+  flex-grow: 1;
+}
+
+.controlsWrapper>div+div{
+  margin-left: 3rem;
+}
+
+
+.controlsWrapper>div>*+* {
+  margin-left: .75rem;
+}
+
+.buttonStandard {
+  padding: .25rem .75rem;
+  border: solid 1px #f0f0f0;
+  font-family: inherit;
+  background-color: #222222;
+  color: #f0f0f0;
+  border-radius: 3px;
+  font-size: .85rem;
+}
+
+.buttonStandard:hover {
+  filter: brightness(1.25);
+}
+
+.buttonStandard:active,
+.buttonStandard:focus,
+.buttonStandard:focus {
+  filter: brightness(1.5);
+}
+
+.buttonColor {
+  border: none;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.chooseFile::file-selector-button {
+  padding: .25rem .75rem;
+  border: solid 1px #f0f0f0;
+  font-family: inherit;
+  background-color: #222222;
+  color: #f0f0f0;
+  border-radius: 3px;
+  font-size: .85rem;
+  margin-right: .75rem;
+}
+
+.chooseFile::file-selector-button:hover {
+  filter: brightness(1.25);
+}
+
+.chooseFile::file-selector-button:active,
+.chooseFile::file-selector-button:focus,
+.chooseFile::file-selector-button:focus {
+  filter: brightness(1.5);
+}
