@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
-  "dependencies": {
-    "electron": "^24.1.2"
+  "devDependencies": {
+    "electron": "^24.1.2",
+    "electron-builder": "^23.6.0"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build-app-image": "electron-builder --linux appImage",
+    "build-deb": "electron-builder --linux deb"
   }
 }

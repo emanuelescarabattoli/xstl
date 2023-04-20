@@ -2,7 +2,11 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require("fs");
 
-const loadArgsFile = () => ({ content: fs.readFileSync(path.join(__dirname, "cube.stl")), fileName: "cube.stl" });
+const getArgvFile = () => {
+  const argsFile = process.argv[1]
+  console.log(argsFile)
+  return { content: fs.readFileSync(argsFile), name: "cube.stl" };
+};
 
 // Store the main window settings in a variable.
 const mainWindowSettings = {
@@ -22,9 +26,6 @@ if (process.env.NODE_ENV === 'development') {
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow(mainWindowSettings);
-
-  win.webContents.send('loadArgsFile', loadArgsFile());
-
   // Load the appropriate URL depending on the environment.
   const startUrl = process.env.NODE_ENV === 'production'
     ? path.join(__dirname, 'index.html')
@@ -37,9 +38,10 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow();
 
-  // Menu.setApplicationMenu(null)
+  ipcMain.handle("get-argv-file", getArgvFile)
+
+  createWindow();
 
   // On macOS, it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

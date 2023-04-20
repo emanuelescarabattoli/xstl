@@ -1,6 +1,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const path = require('path');
+
 
 contextBridge.exposeInMainWorld(
   "electronAPI", {
-  onLoadArgsFile: (callback) => ipcRenderer.on("loadArgsFile", (event, result) => callback(result)),
+    getArgvFile: () => ipcRenderer.invoke("get-argv-file")
 })

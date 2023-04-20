@@ -5,10 +5,6 @@ import style from "./style.module.css"
 import { OrbitControls } from "@react-three/drei"
 import * as THREE from "three";
 
-window.electronAPI.onLoadArgsFile((argsFile, foo) => {
-  console.log("11111")
-})
-
 export const Model = ({ file, fileName, color }) => {
   const geomRef = useRef();
   const bedRef = useRef();
@@ -82,15 +78,21 @@ const Application = () => {
   const [color, setColor] = useState("#ffaa00")
 
   useEffect(() => {
+    const getArgvFile = async () => {
+      const argsFile = await window.electronAPI.getArgvFile()
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        console.log(reader.result)
+        setFile(reader.result);
+        setFileName(argsFile.name)
+      }, false);
+      reader.readAsDataURL(new Blob([argsFile.content], { type: "model/stl" }));
+    }
     const container = containerRef.current;
     const canvas = canvasRef.current;
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
-    window.electronAPI.onLoadArgsFile((argsFile, foo) => {
-      console.log("11111")
-      setFile(argsFile.content);
-      setFile(argsFile.fileName);
-    })
+    getArgvFile()
   }, []);
 
   const onChange = event => {
@@ -131,6 +133,8 @@ const Application = () => {
   const onClickChangeColor = value => {
     setColor(value)
   }
+
+  console.log(fileName)
 
   return (
     <div ref={containerRef} className={style.mainWrapper}>
