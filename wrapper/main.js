@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('path');
 const fs = require("fs");
 
@@ -10,8 +10,10 @@ const getArgvFile = () => {
 
 // Store the main window settings in a variable.
 const mainWindowSettings = {
-  width: 1000,
-  height: 700,
+  width: 920,
+  height: 680,
+  minWidth: 920,
+  minHeight: 680,
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true
@@ -19,7 +21,7 @@ const mainWindowSettings = {
 };
 
 // Enable the DevTools if the app is in development mode.
-if (process.env.NODE_ENV === 'development') {
+if (process.env.ENV === 'development') {
   mainWindowSettings.webPreferences.devTools = true;
 }
 
@@ -27,7 +29,7 @@ function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow(mainWindowSettings);
   // Load the appropriate URL depending on the environment.
-  const startUrl = process.env.NODE_ENV === 'production'
+  const startUrl = process.env.ENV === 'production'
     ? path.join(__dirname, 'index.html')
     : 'http://localhost:3000';
 
@@ -40,6 +42,12 @@ function createWindow() {
 app.whenReady().then(() => {
 
   ipcMain.handle("get-argv-file", getArgvFile)
+
+  console.log(process.env.ENV)
+
+  if (process.env.ENV !== 'development') {
+    Menu.setApplicationMenu(null)
+  }
 
   createWindow();
 

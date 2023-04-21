@@ -28,12 +28,12 @@
 }
 
 .controlsWrapper>div+div{
-  margin-left: 3rem;
+  margin-left: 1.5rem;
 }
 
 
 .controlsWrapper>div>*+* {
-  margin-left: .75rem;
+  margin-left: .5rem;
 }
 
 .buttonStandard {
