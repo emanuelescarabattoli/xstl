@@ -10,8 +10,8 @@ const getArgvFile = () => {
 
 // Store the main window settings in a variable.
 const mainWindowSettings = {
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 700,
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true

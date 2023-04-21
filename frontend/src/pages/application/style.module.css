@@ -15,7 +15,6 @@
   z-index: 999;
   display: flex;
   flex-direction: row;
-  border-radius: 3px;
   width: 100%;
   box-sizing: border-box;
   display: flex;
@@ -62,6 +61,7 @@
   border-radius: 50%;
   width: 1.5rem;
   height: 1.5rem;
+  box-shadow: inset 0 0 3px #f0f0f0;
 }
 
 .chooseFile::file-selector-button {
