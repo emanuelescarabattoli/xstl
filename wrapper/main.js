@@ -15,9 +15,9 @@ const getArgvFile = () => {
 const isDevelopmentEnv = process.env.ENV === "development";
 
 const developmentSettings = {
-  width: 920,
+  width: 1000,
   height: 680,
-  minWidth: 920,
+  minWidth: 1000,
   minHeight: 680,
   icon: path.join(__dirname, "icon.png"),
   webPreferences: {
@@ -31,9 +31,9 @@ const developmentSettings = {
 };
 
 const productionSettings = {
-  width: 920,
+  width: 1000,
   height: 680,
-  minWidth: 920,
+  minWidth: 1000,
   minHeight: 680,
   icon: path.join(__dirname, "icon.png"),
   webPreferences: {

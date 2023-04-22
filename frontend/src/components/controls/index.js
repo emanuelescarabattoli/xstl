@@ -1,42 +1,49 @@
 import style from "./style.module.css"
+import Button from "../button"
+import { useRef } from "react"
 
 const Controls = ({
-  onChange,
-  onClickZoomBed,
-  onClickZoomAxes,
+  fileName,
+  onChangeFile,
+  onClickBed,
+  onClickAxes,
   onClickZoomIn,
   onClickZoomOut,
   onClickSideX,
   onClickSideY,
   onClickSideZ,
   onClickResetPosition,
-  onClickChangeColor
+  onClickSettings,
 }) => {
+  const inputRef = useRef()
+
+  const onClickChooseFile = () => {
+    inputRef.current.click()
+  }
+
   return (
     <div className={style.controlsWrapper}>
       <div>
-        <input className={style.chooseFile} type="file" onChange={onChange} />
+        <Button onClick={onClickChooseFile} text="Open file" />
+        <span className={style.fileName}>{fileName}</span>
+        <input ref={inputRef} style={{ display: "none" }} type="file" onChange={onChangeFile} />
       </div>
       <div>
-        <button className={style.buttonStandard} onClick={onClickZoomBed}>Bed</button>
-        <button className={style.buttonStandard} onClick={onClickZoomAxes}>Axes</button>
+        <Button onClick={onClickBed} text="Bed" />
+        <Button onClick={onClickAxes} text="Axes" />
       </div>
       <div>
-        <button className={style.buttonStandard} onClick={onClickZoomIn}>+</button>
-        <button className={style.buttonStandard} onClick={onClickZoomOut}>-</button>
+        <Button onClick={onClickZoomIn} text="+" />
+        <Button onClick={onClickZoomOut} text="-" />
       </div>
       <div>
-        <button className={style.buttonStandard} onClick={onClickSideX}>X</button>
-        <button className={style.buttonStandard} onClick={onClickSideY}>Y</button>
-        <button className={style.buttonStandard} onClick={onClickSideZ}>Z</button>
-        <button className={style.buttonStandard} onClick={onClickResetPosition}>Reset</button>
+        <Button onClick={onClickSideX} text="X" />
+        <Button onClick={onClickSideY} text="Y" />
+        <Button onClick={onClickSideZ} text="Z" />
+        <Button onClick={onClickResetPosition} text="Reset" />
       </div>
       <div>
-        <button className={style.buttonColor} style={{ backgroundColor: "#cc8800" }} onClick={() => onClickChangeColor("#cc8800")} />
-        <button className={style.buttonColor} style={{ backgroundColor: "#770000" }} onClick={() => onClickChangeColor("#770000")} />
-        <button className={style.buttonColor} style={{ backgroundColor: "#111111" }} onClick={() => onClickChangeColor("#111111")} />
-        <button className={style.buttonColor} style={{ backgroundColor: "#007700" }} onClick={() => onClickChangeColor("#007700")} />
-        <button className={style.buttonColor} style={{ backgroundColor: "#000077" }} onClick={() => onClickChangeColor("#000077")} />
+        <Button onClick={onClickSettings} text="Settings" />
       </div>
     </div>
   )

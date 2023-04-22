@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import { useLoader } from '@react-three/fiber'
 import React, { useEffect, useRef, useLayoutEffect } from 'react'
 import * as THREE from "three";
@@ -23,16 +25,17 @@ const Line = ({ start, end, color }) => {
   const ref = useRef()
   useLayoutEffect(() => {
     ref.current.geometry.setFromPoints([start, end].map((point) => new THREE.Vector3(...point)))
+    ref.current.material = new THREE.LineBasicMaterial({ opacity: .5, color, transparent: true })
   }, [start, end])
   return (
     <line ref={ref}>
       <bufferGeometry />
-      <lineBasicMaterial color={color} />
+      <lineBasicMaterial color={color} opacity={.1} />
     </line>
   )
 }
 
-const Bed = ({ isVisible, bedSize = 220, cellSize = 10 }) => {
+const Bed = ({ isVisible, bedSize = 220, cellSize = 10, color = "#336592" }) => {
   const logo = useLoader(THREE.TextureLoader, "logo.png");
   const logoRef = useRef();
 
@@ -42,23 +45,26 @@ const Bed = ({ isVisible, bedSize = 220, cellSize = 10 }) => {
     }
   }, [])
 
+  useEffect(() => {
+    logoRef.current.material = new THREE.MeshBasicMaterial({ opacity: .5, color, transparent: true, map: logo })
+  }, [color])
+
   const lines = getGridLines(bedSize, cellSize)
 
   return (
     <group visible={isVisible}>
       <mesh ref={logoRef} position={[bedSize / 2 - 25 - cellSize * 2, .1, bedSize / 2 - 10 - cellSize * 2]}>
         <planeBufferGeometry attach="geometry" args={[50, 20]} />
-        <meshBasicMaterial attach="material" map={logo} transparent />
       </mesh>
       <mesh position={[0, -1, 0]}>
         <boxGeometry args={[bedSize, 1, bedSize]} />
-        <meshStandardMaterial color="#336592" />
+        <meshStandardMaterial color={color} />
       </mesh>
       {
         lines.map((line, index) => (
           <React.Fragment key={`grid_lines_${index}`}>
-            <Line start={line[0].start} end={line[0].end} color="#4282bc" />
-            <Line start={line[1].start} end={line[1].end} color="#4282bc" />
+            <Line start={line[0].start} end={line[0].end} color={color} />
+            <Line start={line[1].start} end={line[1].end} color={color} />
           </React.Fragment>
         ))
       }

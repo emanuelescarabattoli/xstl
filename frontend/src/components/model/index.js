@@ -1,8 +1,9 @@
 import { useLoader } from '@react-three/fiber'
 import { useEffect, useRef } from 'react'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
+import ErrorBoundary from '../error-boundary';
 
-const Model = ({ file, fileName, color }) => {
+const Model = ({ file, color }) => {
   const geom = useLoader(STLLoader, file)
   const geomRef = useRef();
 
@@ -18,10 +19,12 @@ const Model = ({ file, fileName, color }) => {
   }
 
   return (
-    <mesh ref={geomRef} position={[0, (geom?.boundingBox?.max.z - geom?.boundingBox?.min.z) / 2, 0,]}>
-      <primitive object={geom} attach="geometry" />
-      <meshStandardMaterial color={color} />
-    </mesh>
+    <ErrorBoundary>
+      <mesh ref={geomRef} position={[0, (geom?.boundingBox?.max.z - geom?.boundingBox?.min.z) / 2, 0,]}>
+        <primitive object={geom} attach="geometry" />
+        <meshStandardMaterial color={color} />
+      </mesh>
+    </ErrorBoundary>
   );
 };
 
