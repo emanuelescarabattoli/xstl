@@ -8,3 +8,12 @@ node_modules/
 .todo.txt
 
 dist
+build
+
+wrapper/cube.stl
+wrapper/favicon.ico
+wrapper/manifest.json
+wrapper/static
+wrapper/asset-manifest.json
+wrapper/logo.png
+# wrapper/index.html

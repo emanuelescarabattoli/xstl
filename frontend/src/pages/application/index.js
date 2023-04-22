@@ -22,13 +22,15 @@ const Application = () => {
   useEffect(() => {
     const getArgvFile = async () => {
       const argsFile = await window.electronAPI.getArgvFile()
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        console.log(reader.result)
-        setFile(reader.result);
-        setFileName(argsFile.name)
-      }, false);
-      reader.readAsDataURL(new Blob([argsFile.content], { type: "model/stl" }));
+      if(argsFile) {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          console.log(reader.result)
+          setFile(reader.result);
+          setFileName(argsFile.name)
+        }, false);
+        reader.readAsDataURL(new Blob([argsFile.content], { type: "model/stl" }));
+      }
     }
     const container = containerRef.current;
     const canvas = canvasRef.current;

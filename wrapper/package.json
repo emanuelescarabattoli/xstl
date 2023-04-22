@@ -1,10 +1,10 @@
 {
   "homepage": "./",
-  "name": "Xstl",
   "author": {
     "name": "example",
     "email": "example@example.com"
   },
+  "name": "Xstl",
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "ENV=development electron .",
-    "build-app-image": "electron-builder --linux appImage",
-    "build-deb": "electron-builder --linux deb"
+    "build-app-image": "env=production cd ../frontend && yarn build && cd ../wrapper && cp -r ../frontend/build ./build && electron-builder --linux appImage",
+    "build": "electron-builder --linux appImage"
   }
 }
