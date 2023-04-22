@@ -11,6 +11,20 @@ import Controls from '../../components/controls'
 import ErrorBoundary from '../../components/error-boundary'
 import ModalSettings from '../../components/modal-settings'
 
+const defaultSettings = { bedColor: "#336592", modelColor: "#cc8800" }
+
+const parseSettings = () => {
+  const settingsString = localStorage.getItem("settings");
+  if(settingsString) {
+    return JSON.parse(settingsString);
+  }
+  return defaultSettings;
+}
+
+const saveSettings = settings => {
+  localStorage.setItem("settings", JSON.stringify(settings));
+}
+
 const Application = () => {
   const [file, setFile] = useState(undefined)
   const [fileName, setFileName] = useState(undefined)
@@ -20,7 +34,7 @@ const Application = () => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState([100, 100, 100])
-  const [settings, setSetting] = useState({ bedColor: "#336592", modelColor: "#cc8800" })
+  const [settings, setSetting] = useState(parseSettings())
 
   useEffect(() => {
     const getArgvFile = async () => {
@@ -62,7 +76,7 @@ const Application = () => {
   }
 
   const onClickSideX = () => {
-    setCameraPosition(() => [0, 0, 1100])
+    setCameraPosition(() => [0, 0, 100])
   }
 
   const onClickSideY = () => {
@@ -88,8 +102,8 @@ const Application = () => {
   const onChangeSettings = (element, value) => {
     const updatedSettings = { ...settings, [element]: value }
     setSetting(updatedSettings)
+    saveSettings(updatedSettings)
   }
-
 
   return (
     <div ref={containerRef} className={style.mainWrapper}>

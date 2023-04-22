@@ -3,7 +3,6 @@ import style from "./style.module.css"
 import Button from "../button"
 
 const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, settings }) => {
-
   return (
     <div className={style.popupContainer} style={{ display: isVisible ? "block" : "none" }}>
       <span className={style.title}>{title}</span>
