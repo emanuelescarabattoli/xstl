@@ -14,6 +14,7 @@ const mainWindowSettings = {
   height: 680,
   minWidth: 920,
   minHeight: 680,
+  icon: path.join(__dirname, "icon.png"),
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true

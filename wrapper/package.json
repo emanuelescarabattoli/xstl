@@ -1,8 +1,14 @@
 {
-  "name": "wrapper",
+  "homepage": "./",
+  "name": "Xstl",
+  "author": {
+    "name": "example",
+    "email": "example@example.com"
+  },
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
+  "icon": "icon.png",
   "devDependencies": {
     "electron": "^24.1.2",
     "electron-builder": "^23.6.0"
