@@ -3,12 +3,12 @@ const path = require("path")
 const fs = require("fs");
 
 const getArgvFile = () => {
-  // if (!isDevelopmentEnv) {
-  //   const argsFile = process.argv[1]
-  //   if (argsFile) {
-  //     return { content: process.argv[1], name: process.argv[1] };
-  //   }
-  // }
+  if (!isDevelopmentEnv) {
+    const argsFile = process.argv[1]
+    if (argsFile) {
+      return { content: fs.readFileSync(process.argv[1]), name: process.argv[1] };
+    }
+  }
   return undefined;
 };
 

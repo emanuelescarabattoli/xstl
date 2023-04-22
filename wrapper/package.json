@@ -15,7 +15,6 @@
   },
   "scripts": {
     "start": "ENV=development electron .",
-    "build-app-image": "env=production cd ../frontend && yarn build && cd ../wrapper && cp -r ../frontend/build ./build && electron-builder --linux appImage",
     "build": "electron-builder --linux appImage"
   }
 }
