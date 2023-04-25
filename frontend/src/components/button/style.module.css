@@ -1,10 +1,10 @@
 .buttonStandard {
   padding: .3rem .55rem;
   border: solid 1px #f0f0f0;
+  border-radius: 5px;
   font-family: inherit;
   background-color: #222222;
   color: #f0f0f0;
-  border-radius: 5px;
   font-size: .85rem;
 }
 

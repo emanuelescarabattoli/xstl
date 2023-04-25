@@ -2,7 +2,7 @@ import { useThree } from '@react-three/fiber'
 import { useEffect } from 'react'
 import * as THREE from "three";
 
-const Helpers = ({ cameraPosition, isVisible }) => {
+const Helpers = ({ cameraPosition, isAxesVisible }) => {
   const { camera } = useThree();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const Helpers = ({ cameraPosition, isVisible }) => {
       <pointLight position={[-200, 200, -200]} intensity={.75} />
       <pointLight position={[200, 200, -200]} intensity={.75} />
       <pointLight position={[-200, 200, 200]} intensity={.75} />
-      <group visible={isVisible}>
+      <group visible={isAxesVisible}>
         <primitive object={new THREE.AxesHelper(2000)} />
       </group>
     </>

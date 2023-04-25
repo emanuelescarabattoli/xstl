@@ -10,31 +10,25 @@ import Model from '../../components/model'
 import Controls from '../../components/controls'
 import ErrorBoundary from '../../components/error-boundary'
 import ModalSettings from '../../components/modal-settings'
-
-const defaultSettings = { bedColor: "#336592", modelColor: "#cc8800" }
-
-const parseSettings = () => {
-  const settingsString = localStorage.getItem("settings");
-  if(settingsString) {
-    return JSON.parse(settingsString);
-  }
-  return defaultSettings;
-}
-
-const saveSettings = settings => {
-  localStorage.setItem("settings", JSON.stringify(settings));
-}
+import { saveSettings, parseSettings } from '../../utils/settings'
 
 const Application = () => {
   const [file, setFile] = useState(undefined)
-  const [fileName, setFileName] = useState(undefined)
-  const [isBedVisible, setIsBedVisible] = useState(true)
-  const [isAxesVisible, setIsAxesVisible] = useState(false)
+  const [filePath, setFilePath] = useState(undefined)
   const [isSettingsVisible, setIsSettingsVisible] = useState(false)
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState([100, 100, 100])
   const [settings, setSetting] = useState(parseSettings())
+
+  const readFile = toReadFile => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      setFile(reader.result);
+      setFilePath(toReadFile.name)
+    }, false);
+    reader.readAsDataURL(new Blob([toReadFile.content], { type: "model/stl" }));
+  }
 
   useEffect(() => {
     const getArgvFile = async () => {
@@ -42,9 +36,8 @@ const Application = () => {
       if (argsFile) {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-          console.log(reader.result)
           setFile(reader.result);
-          setFileName(argsFile.name)
+          setFilePath(argsFile.name)
         }, false);
         reader.readAsDataURL(new Blob([argsFile.content], { type: "model/stl" }));
       }
@@ -60,10 +53,12 @@ const Application = () => {
     const reader = new FileReader();
     reader.addEventListener("load", () => {
       setFile(reader.result);
+      setFilePath(event.target.files[0].path)
     }, false);
     if (event.target.files[0]) {
+      setFilePath(undefined);
+      setFile(undefined);
       reader.readAsDataURL(event.target.files[0]);
-      setFileName(event.target.files[0].name)
     }
   }
 
@@ -91,10 +86,6 @@ const Application = () => {
     setCameraPosition(() => [100, 100, 100])
   }
 
-  const onClickBed = () => setIsBedVisible(value => !value)
-
-  const onClickAxes = () => setIsAxesVisible(value => !value)
-
   const onClickSettings = () => setIsSettingsVisible(true)
 
   const onClickCloseSettings = () => setIsSettingsVisible(false)
@@ -105,14 +96,26 @@ const Application = () => {
     saveSettings(updatedSettings)
   }
 
+  const onClickPreviousFile = async () => {
+    if (filePath) {
+      const previousFile = await window.electronAPI.getPreviousFile(filePath)
+      if (previousFile) readFile(previousFile);
+    }
+  }
+
+  const onClickNextFile = async () => {
+    if (filePath) {
+      const nextFile = await window.electronAPI.getNextFile(filePath)
+      if (nextFile) readFile(nextFile);
+    }
+  }
+
   return (
     <div ref={containerRef} className={style.mainWrapper}>
       <ErrorBoundary>
         <Controls
-          fileName={fileName}
+          filePath={filePath}
           onChangeFile={onChangeFile}
-          onClickBed={onClickBed}
-          onClickAxes={onClickAxes}
           onClickZoomIn={onClickZoomIn}
           onClickZoomOut={onClickZoomOut}
           onClickSideX={onClickSideX}
@@ -120,23 +123,25 @@ const Application = () => {
           onClickSideZ={onClickSideZ}
           onClickResetPosition={onClickResetPosition}
           onClickSettings={onClickSettings}
+          onClickPreviousFile={onClickPreviousFile}
+          onClickNextFile={onClickNextFile}
         />
         <Canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}>
-          <Suspense fallback={null}>
-            <Bed bedSize={220} cellSize={10} isVisible={isBedVisible} color={settings.bedColor} />
-            {fileName ? <Model file={file} color={settings.modelColor} /> : <></>}
+          <Suspense fallback={<></>}>
+            <Bed bedSize={220} cellSize={10} isVisible={settings.isBedVisible} color={settings.bedColor} />
+            {filePath ? <Model file={file} color={settings.modelColor} /> : <></>}
             <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
-            <Helpers cameraPosition={cameraPosition} isBedVisible={isBedVisible} isVisible={isAxesVisible} />
+            <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} />
           </Suspense>
         </Canvas>
+        <ModalSettings
+          isVisible={isSettingsVisible}
+          onCLickClose={onClickCloseSettings}
+          title="Settings"
+          onChangeSettings={onChangeSettings}
+          settings={settings}
+        />
       </ErrorBoundary>
-      <ModalSettings
-        isVisible={isSettingsVisible}
-        onCLickClose={onClickCloseSettings}
-        title="Settings"
-        onChangeSettings={onChangeSettings}
-        settings={settings}
-      />
     </div>
   )
 }

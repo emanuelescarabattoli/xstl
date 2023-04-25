@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import ErrorBoundary from '../error-boundary';
 
-const Model = ({ file, color }) => {
+const Model = ({ file, color, yOffset = 0 }) => {
   const geom = useLoader(STLLoader, file)
   const geomRef = useRef();
 
@@ -20,7 +20,7 @@ const Model = ({ file, color }) => {
 
   return (
     <ErrorBoundary>
-      <mesh ref={geomRef} position={[0, (geom?.boundingBox?.max.z - geom?.boundingBox?.min.z) / 2, 0,]}>
+      <mesh ref={geomRef} position={[0, (geom?.boundingBox?.max.z - geom?.boundingBox?.min.z) / 2 + yOffset, 0,]}>
         <primitive object={geom} attach="geometry" />
         <meshStandardMaterial color={color} />
       </mesh>

@@ -15,6 +15,7 @@
   },
   "scripts": {
     "start": "ENV=development electron .",
-    "build": "electron-builder --linux appImage"
+    "build-app-image": "electron-builder --linux appImage",
+    "build-deb": "electron-builder --linux deb"
   }
 }

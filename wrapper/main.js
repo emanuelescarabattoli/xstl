@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron")
+const { app, BrowserWindow, ipcMain, Menu } = require("electron")
 const path = require("path")
 const fs = require("fs");
 
@@ -78,9 +78,9 @@ app.whenReady().then(() => {
   ipcMain.handle("get-previous-file", getPreviousFile)
   ipcMain.handle("get-next-file", getNextFile)
 
-  // if (process.env.ENV !== 'development') {
-  //   Menu.setApplicationMenu(null)
-  // }
+  if (process.env.ENV !== 'development') {
+    Menu.setApplicationMenu(null)
+  }
 
   createWindow();
 

@@ -1,0 +1,6 @@
+.mainWrapper {
+  box-sizing: border-box;
+  background-color: #222222dd;
+  border: solid 1px #f0f0f088;
+  border-radius: 3px;
+}
