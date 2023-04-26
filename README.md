@@ -27,7 +27,7 @@ yarn install
 yarn build-deb
 
 // Build AppImage package
-yarn build-deb
+yarn build-app-image
 
 ```
 
