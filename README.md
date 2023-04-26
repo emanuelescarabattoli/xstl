@@ -1,4 +1,6 @@
-![Xstl](/wrapper/build/icons/icon_256x256.png "Xstl")
+<img src="./wrapper/build/icons/icon_256x256.png" alt="Xstl" width="128"/>
+
+<br/>
 
 # Xstl
 
