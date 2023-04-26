@@ -6,7 +6,7 @@ const getArgvFile = () => {
   if (!isDevelopmentEnv) {
     const argsFile = process.argv[1]
     if (argsFile) {
-      return { content: fs.readFileSync(process.argv[1]), name: process.argv[1] };
+      return { content: fs.readFileSync(argsFile), name: argsFile };
     }
   }
   return undefined;
@@ -37,7 +37,7 @@ const developmentSettings = {
   height: 680,
   minWidth: 1000,
   minHeight: 680,
-  icon: path.join(__dirname, "icon.png"),
+  icon: path.join(__dirname, "build", "icons", "icon_256x256.png"),
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true,

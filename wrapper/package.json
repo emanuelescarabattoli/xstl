@@ -1,14 +1,16 @@
 {
-  "homepage": "./",
+  "homepage": "https://github.com/emanuelescarabattoli/xstl",
   "author": {
-    "name": "example",
+    "name": "Emanuele Scarabattoli",
     "email": "example@example.com"
   },
   "name": "Xstl",
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
-  "icon": "icon.png",
+  "icon": "icon.ico",
+  "description": "An STL file viewer",
+  "displayName": "Xstl",
   "devDependencies": {
     "electron": "^24.1.2",
     "electron-builder": "^23.6.0"
@@ -17,5 +19,10 @@
     "start": "ENV=development electron .",
     "build-app-image": "electron-builder --linux appImage",
     "build-deb": "electron-builder --linux deb"
+  },
+  "build": {
+    "linux": {
+      "category": "Graphics"
+    }
   }
 }
