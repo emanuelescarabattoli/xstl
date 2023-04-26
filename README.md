@@ -12,7 +12,7 @@ By changing the default settings you can visualized your model in different colo
 
 <img src="./docs/assets/images/screen-settings.png" alt="Settings"/>
 
-## Build
+## Build instructions
 
 Here the instructions to build your `deb` or `AppImage` package
 
@@ -30,3 +30,11 @@ yarn build-deb
 yarn build-deb
 
 ```
+
+## Contribute
+
+Feel free yo contribute to this project in here https://github.com/emanuelescarabattoli/xstl/pulls
+
+## License
+
+Licensed under the MIT license.
