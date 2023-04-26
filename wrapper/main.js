@@ -57,7 +57,7 @@ const productionSettings = {
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true,
-    devTools: true,
+    devTools: false,
     webSecurity: false,
   },
   fullscreen: false,
@@ -79,7 +79,7 @@ app.whenReady().then(() => {
   ipcMain.handle("get-next-file", getNextFile)
 
   if (process.env.ENV !== 'development') {
-    // Menu.setApplicationMenu(null)
+    Menu.setApplicationMenu(null)
   }
 
   createWindow();
