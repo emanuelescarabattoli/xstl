@@ -12,17 +12,24 @@
   "description": "An STL file viewer",
   "displayName": "Xstl",
   "devDependencies": {
+    "electron-builder": "^23.6.0",
     "electron": "^24.1.2",
-    "electron-builder": "^23.6.0"
+    "fs-extra": "^11.1.1"
   },
   "scripts": {
     "start": "ENV=development electron .",
-    "build-app-image": "electron-builder --linux appImage",
-    "build-deb": "electron-builder --linux deb"
+    "build-app-image": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux appImage && node ./build postbuild",
+    "build-deb": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux deb && node ./build postbuild"
   },
   "build": {
     "linux": {
       "category": "Graphics"
-    }
+    },
+    "files": [
+      "node_modules/**/*",
+      "./**/*",
+      "frontend-build/**/*",
+      "package.json"
+    ]
   }
 }

@@ -69,7 +69,7 @@ const createWindow = () => {
   if (isDevelopmentEnv) {
     mainWindow.loadURL("http://localhost:3000/");
   } else {
-    mainWindow.loadFile(path.join(__dirname, "index.html"));
+    mainWindow.loadFile(path.join(__dirname, "frontend-build", "index.html"));
   }
 }
 
@@ -79,7 +79,7 @@ app.whenReady().then(() => {
   ipcMain.handle("get-next-file", getNextFile)
 
   if (process.env.ENV !== 'development') {
-    Menu.setApplicationMenu(null)
+    // Menu.setApplicationMenu(null)
   }
 
   createWindow();
