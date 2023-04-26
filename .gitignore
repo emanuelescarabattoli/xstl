@@ -7,13 +7,14 @@ node_modules/
 
 .todo.txt
 
-dist
-build
+wrapper/dist
+frontend/build
 
-wrapper/favicon.ico
+wrapper/facicon.icon
 wrapper/manifest.json
 wrapper/static
 wrapper/asset-manifest.json
 wrapper/logo.png
 wrapper/index.html
+wrapper/favicon.ico
 wrapper/fontawesome
