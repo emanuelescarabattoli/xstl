@@ -2,12 +2,10 @@ const { app, BrowserWindow, ipcMain, Menu } = require("electron")
 const path = require("path")
 const fs = require("fs");
 
-const getArgvFile = () => {
+const getArgvFile = argv => {
   if (!isDevelopmentEnv) {
-    const argsFile = process.argv[1]
-    if (argsFile) {
-      return { content: fs.readFileSync(argsFile), name: argsFile };
-    }
+    const argvFile = argv[argv.length - 1]
+    if (argvFile) return { content: fs.readFileSync(argvFile), name: argvFile };
   }
   return undefined;
 };
@@ -57,7 +55,7 @@ const productionSettings = {
   webPreferences: {
     preload: path.join(__dirname, "preload.js"),
     nodeIntegration: true,
-    devTools: false,
+    devTools: true,
     webSecurity: false,
   },
   fullscreen: false,
@@ -74,12 +72,16 @@ const createWindow = () => {
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle("get-argv-file", getArgvFile)
+  ipcMain.handle("get-argv-file", () => getArgvFile(process.argv))
   ipcMain.handle("get-previous-file", getPreviousFile)
   ipcMain.handle("get-next-file", getNextFile)
 
   if (process.env.ENV !== 'development') {
     Menu.setApplicationMenu(null)
+  }
+
+  if (!app.requestSingleInstanceLock()) {
+    app.quit()
   }
 
   createWindow();
@@ -91,4 +93,13 @@ app.whenReady().then(() => {
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit()
+})
+
+app.on('second-instance', (event, argv, cwd) => {
+  const window = BrowserWindow.getAllWindows()[0]
+  if (window) {
+    if (window.isMinimized()) window.restore()
+    window.focus();
+    window.webContents.send("file-received", getArgvFile(argv))
+  }
 })
