@@ -53,8 +53,8 @@ const Bed = ({ isVisible, bedSize = 220, cellSize = 10, color = "#336592" }) => 
 
   return (
     <group visible={isVisible}>
-      <mesh ref={logoRef} position={[bedSize / 2 - 5 - cellSize * 2, .1, bedSize / 2 - 5 - cellSize * 2]}>
-        <planeBufferGeometry attach="geometry" args={[24, 24]} />
+      <mesh ref={logoRef} position={[bedSize / 2 - cellSize * 2 - 10, .1, bedSize / 2 - cellSize * 2 - 10]}>
+        <planeBufferGeometry attach="geometry" args={[cellSize + 10, cellSize + 10]} />
       </mesh>
       <mesh position={[0, -1, 0]}>
         <boxGeometry args={[bedSize, 1, bedSize]} />

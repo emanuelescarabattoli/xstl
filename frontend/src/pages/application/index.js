@@ -131,7 +131,7 @@ const Application = () => {
         />
         <Canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}>
           <Suspense fallback={<></>}>
-            <Bed bedSize={220} cellSize={10} isVisible={settings.isBedVisible} color={settings.bedColor} />
+            <Bed bedSize={settings.bedSize} cellSize={settings.bedGridCellSize} isVisible={settings.isBedVisible} color={settings.bedColor} />
             {filePath ? <Model file={file} color={settings.modelColor} /> : <></>}
             <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
             <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} />

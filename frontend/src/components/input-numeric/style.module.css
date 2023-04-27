@@ -1,0 +1,33 @@
+button {
+  padding: .3rem .55rem;
+  border: solid 1px #f0f0f0;
+  border-radius: 5px;
+  font-family: inherit;
+  background-color: #222222;
+  color: #f0f0f0;
+  font-size: .85rem;
+}
+
+button:hover {
+  filter: brightness(1.25);
+}
+
+button:active,
+button:focus,
+button:focus {
+  filter: brightness(1.5);
+}
+
+button:disabled {
+  opacity: .25;
+}
+
+.value {
+  color: #f0f0f0;
+  padding: .3rem .55rem;
+  border: solid 1px #f0f0f0;
+  border-radius: 5px;
+  font-size: .85rem;
+  margin: 0 .25rem;
+  background-color: #f0f0f022;
+}

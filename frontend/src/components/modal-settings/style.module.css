@@ -1,15 +1,14 @@
-
 .popupContainer {
   padding: 1.5rem;
   background-color: #181818dd;
   box-shadow: 0 3px 5px 0 #08080844;
   border-radius: 3px;
   width: 600px;
+  height: 400px;
   position: fixed;
   z-index: 999;
   top: calc(50vh - 200px);
   left: calc(50vw - 300px);
-  height: 400px;
 }
 
 .title {
@@ -39,7 +38,6 @@
 
 .sectionWrapper>div:first-child {
   flex-grow: 1;
-  color: #f0f0f0;
 }
 
 .buttonColor {
@@ -51,7 +49,32 @@
   margin-right: .5rem;
 }
 
-.label {
+.sectionTitle {
   display: block;
+  font-weight: 500;
+  color: #f0f0f0;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  font-size: 1.25rem;
+}
+
+.sectionColumns {
+  display: flex;
+  align-items: center;
   margin-bottom: .5rem;
+  flex-direction: row;
+}
+
+.sectionColumn {
+  display: flex;
+  align-items: center;
+}
+
+.sectionColumn+.sectionColumn {
+  margin-left: 1rem;
+}
+
+.columnLabel {
+  display: block;
+  color: #f0f0f0;
 }
