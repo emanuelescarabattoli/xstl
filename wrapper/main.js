@@ -5,7 +5,7 @@ const fs = require("fs");
 const getArgvFile = argv => {
   if (!isDevelopmentEnv) {
     const argvFile = argv[argv.length - 1]
-    if (argvFile) return { content: fs.readFileSync(argvFile), name: argvFile };
+    if (argvFile && argvFile.endsWith(".stl")) return { content: fs.readFileSync(argvFile), name: argvFile };
   }
   return undefined;
 };
