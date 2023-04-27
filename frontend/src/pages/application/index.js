@@ -31,8 +31,8 @@ const Application = () => {
   }
 
   useEffect(() => {
-    const getArgvFile = async () => {
-      const argsFile = await window.electronAPI.getArgvFile()
+    const getArgvFile = async argvFile => {
+      const argsFile = argvFile || await window.electronAPI.getArgvFile()
       if (argsFile) {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -47,6 +47,9 @@ const Application = () => {
     canvas.width = container.clientWidth;
     canvas.height = container.clientHeight;
     getArgvFile()
+    window.electronAPI.onFileReceived(async argvFile => {
+      await getArgvFile(argvFile)
+    })
   }, []);
 
   const onChangeFile = event => {
