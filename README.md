@@ -14,22 +14,50 @@ By changing the default settings you can visualized your model in different colo
 
 ## Build instructions
 
-Here the instructions to build your `deb` or `AppImage` package
+Here the instructions to build your `deb` or `AppImage` package:
 
+- Navigate to xtl code folder, wrapper sub-directory
 ```
-// Navigate to xtl code folder, wrapper sub-directory
 cd ./xstl/wrapper
-
-// Install node packages
+```
+- Install packages using yarn
+```
 yarn install
-
-// Build deb package
+```
+- To build deb package
+```
 yarn build-deb
-
-// Build AppImage package
+```
+- To build AppImage package
+```
 yarn build-app-image
 
 ```
+
+## Local setup
+
+To run the project locally, after cloning it, do the following
+
+- Open a terminal, navigate to the frontend directory and install dependencies using yarn
+```
+cd frontned
+yarn install
+```
+- Run the React project
+```
+yarn start
+```
+- You can close the browser tab that will open up
+- In another terminal, navigate to the electron application directory and install dependencies using yarn
+```
+cd wrapper
+yarn install
+```
+- Run the project
+```
+yarn start
+```
+- Now the application is running locally
 
 ## Contribute
 
