@@ -19,11 +19,17 @@
   "scripts": {
     "start": "ENV=development electron .",
     "build-app-image": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux appImage && node ./build postbuild",
-    "build-deb": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux deb && node ./build postbuild"
+    "build-deb": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux deb && node ./build postbuild",
+    "build-win": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --win && node ./build postbuild"
   },
   "build": {
+    "appId": "com.xstl.app",
     "linux": {
       "category": "Graphics"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icons/icon.ico"
     },
     "files": [
       "node_modules/**/*",

@@ -2,7 +2,7 @@
 
 # Xstl, a free and open-source STL viewer
 
-Xstl is a free and open-source STL viewer build with modern tools, Electron and React. With Xstl you can open an STL file and navigate trough a directory to see all the STL files on it, buy using buttons or with a shortcut (`alt+z` and `alt+x`). The default view is isometric, so you can see all the details of your model.
+Xstl is a free and open-source STL viewer for Linux and Windows, build with modern tools, Electron and React. With Xstl you can open an STL file and navigate trough a directory to see all the STL files on it, buy using buttons or with a shortcut (`alt+z` and `alt+x`). The default view is isometric, so you can see all the details of your model.
 
 <img src="./docs/assets/images/screen-main.png" alt="Settings"/>
 
@@ -14,7 +14,7 @@ By changing the default settings you can visualized your model in different colo
 
 ## Build instructions
 
-Here the instructions to build your `deb` or `AppImage` package:
+Here the instructions to build the project:
 
 - Navigate to xtl code folder, wrapper sub-directory
 ```
@@ -31,6 +31,11 @@ yarn build-deb
 - To build AppImage package
 ```
 yarn build-app-image
+
+```
+- To build Windows setup package
+```
+yarn build-win
 
 ```
 
