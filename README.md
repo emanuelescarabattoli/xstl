@@ -12,6 +12,24 @@ By changing the default settings you can visualized your model in different colo
 
 <img src="./docs/assets/images/screen-settings.png" alt="Settings"/>
 
+## Install
+
+To install Xstl, check the releases page https://github.com/emanuelescarabattoli/xstl/releases
+
+## Set as default program
+
+To set Xstl as default STL files viewer on Windows:
+
+- Double-click on a `.stl` file
+- Select "Open with another program"
+- Navigate to `C:\Users\<your user>\AppData\Local\Programs\Xstl` folder
+- Select `Xstl.exe`
+
+To set Xstl as default STL files viewer on Linux:
+
+- Double-click on a `.stl` file
+- In the window that will open, search for "Xstl" and select it
+
 ## Build instructions
 
 Here the instructions to build the project:
@@ -38,20 +56,6 @@ yarn build-app-image
 yarn build-win
 
 ```
-
-## Set as default program
-
-To set Xstl as default STL files viewer on Windows:
-
-- Double-click on a `.stl` file
-- Select "Open with another program"
-- Navigate to `C:\Users\<your user>\AppData\Local\Programs\Xstl` folder
-- Select `Xstl.exe`
-
-To set Xstl as default STL files viewer on Linux:
-
-- Double-click on a `.stl` file
-- In the window that will open, search for "Xstl" and select it
 
 ## Local setup
 
@@ -80,7 +84,7 @@ yarn start
 
 ## Contribute
 
-Feel free yo contribute to this project in here https://github.com/emanuelescarabattoli/xstl/pulls
+Feel free yo contribute to this project here https://github.com/emanuelescarabattoli/xstl/pulls or open an issue here https://github.com/emanuelescarabattoli/xstl/issues
 
 ## License
 
