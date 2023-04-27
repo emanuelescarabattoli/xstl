@@ -39,6 +39,20 @@ yarn build-win
 
 ```
 
+## Set as default program
+
+To set Xstl as default STL files viewer on Windows:
+
+- Double-click on a `.stl` file
+- Select "Open with another program"
+- Navigate to `C:\Users\<your user>\AppData\Local\Programs\Xstl` folder
+- Select `Xstl.exe`
+
+To set Xstl as default STL files viewer on Linux:
+
+- Double-click on a `.stl` file
+- In the window that will open, search for "Xstl" and select it
+
 ## Local setup
 
 To run the project locally, after cloning it, do the following
