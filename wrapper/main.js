@@ -13,7 +13,8 @@ const getArgvFile = argv => {
 const getPreviousFile = (event, filePath) => {
   const basename = path.basename(filePath);
   const dirname = path.dirname(filePath);
-  const files = fs.readdirSync(dirname).filter(item => item.endsWith(".stl"));
+  const files = fs.readdirSync(dirname).filter(item => item.trim().toLocaleLowerCase().endsWith(".stl")).sort((a, b) => a > b ? 1 : -1);
+  console.log(files);
   let index = files.indexOf(basename) + 1;
   if (index > files.length - 1) index = 0;
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
@@ -22,7 +23,7 @@ const getPreviousFile = (event, filePath) => {
 const getNextFile = (event, filePath) => {
   const basename = path.basename(filePath);
   const dirname = path.dirname(filePath);
-  const files = fs.readdirSync(dirname).filter(item => item.endsWith(".stl"));
+  const files = fs.readdirSync(dirname).filter(item => item.trim().toLocaleLowerCase().endsWith(".stl")).sort((a, b) => a > b ? 1 : -1);;
   let index = files.indexOf(basename) - 1;
   if (index < 0) index = files.length - 1;
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
