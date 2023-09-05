@@ -1,0 +1,7 @@
+.filePath {
+  display: inline-block;
+  padding: 0 .25rem;
+  font-weight: 500;
+  color: #f0f0f0;
+  font-size: .75rem;
+}

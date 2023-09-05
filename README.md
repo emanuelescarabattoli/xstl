@@ -34,6 +34,8 @@ To set Xstl as default STL files viewer on Linux:
 
 Here the instructions to build the project:
 
+- Change the version in `./xstl/wrapper/package.json`, if you want to perform a release
+
 - Navigate to xtl code folder, wrapper sub-directory
 ```
 cd ./xstl/wrapper

@@ -2,6 +2,7 @@ import React from 'react'
 import style from "./style.module.css"
 import Button from "../button"
 import InputNumeric from "../input-numeric"
+import InputFile from '../input-file'
 
 const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, settings }) => {
   return (
@@ -66,6 +67,17 @@ const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, setti
             </div>
             <div className={style.sectionColumn}>
               <InputNumeric value={settings?.bedGridCellSize ?? 10} onChange={value => onChangeSettings("bedGridCellSize", value)} minimumValue={5} maximumValue={100} step={5} />
+            </div>
+          </div>
+        </div>
+        <div className={style.sectionWrapper}>
+          <span className={style.sectionTitle}>Open with external application</span>
+          <div className={style.sectionColumns}>
+            <div className={style.sectionColumn}>
+              <span className={style.columnLabel}>External application</span>
+            </div>
+            <div className={style.sectionColumn}>
+              <InputFile value={settings.openWithPath} onChange={event => onChangeSettings("openWithPath", event.target.files[0].path)} />
             </div>
           </div>
         </div>

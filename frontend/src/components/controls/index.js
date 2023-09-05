@@ -2,11 +2,9 @@
 
 import style from "./style.module.css"
 import Button from "../button"
-import { useRef } from "react"
 import Tooltip from "../tooltip"
 import Icon from "../icon"
-
-const getFileName = filePath => filePath?.replaceAll("\\", "/").split("/").pop() ?? "";
+import InputFile from "../input-file"
 
 const Controls = ({
   filePath,
@@ -20,31 +18,27 @@ const Controls = ({
   onClickSettings,
   onClickPreviousFile,
   onClickNextFile,
+  onClickOpenWith,
 }) => {
-  const inputRef = useRef()
-
-  const onClickChooseFile = () => {
-    inputRef.current.click()
-  }
-
   return (
     <div className={style.controlsWrapper}>
       <div>
-        <Button onClick={onClickChooseFile} text={<Icon name="folder-open" />} />
         {
           filePath ? (
             <>
-              <Tooltip text="alt + z">
+              <Tooltip text="Alt + Z">
                 <Button onClick={onClickPreviousFile} text={<Icon name="chevron-left" />} accessKey="z" />
               </Tooltip>
-              <Tooltip text="alt + x">
+              <Tooltip text="Alt + X">
                 <Button onClick={onClickNextFile} text={<Icon name="chevron-right" />} accessKey="x" />
+              </Tooltip>
+              <Tooltip text="Open with external application">
+                <Button onClick={onClickOpenWith} text={<Icon name="external-link" />} accessKey="z" />
               </Tooltip>
             </>
           ) : <></>
         }
-        <span className={style.filePath}>{getFileName(filePath)}</span>
-        <input ref={inputRef} style={{ display: "none" }} type="file" onChange={onChangeFile} />
+        <InputFile value={filePath} onChange={onChangeFile} />
       </div>
       <div>
         <Button onClick={onClickZoomIn} text={<Icon name="plus" />} />

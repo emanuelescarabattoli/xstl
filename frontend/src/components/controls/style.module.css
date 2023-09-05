@@ -23,40 +23,6 @@
   margin-left: 1.5rem;
 }
 
-
 .controlsWrapper>div>*+* {
   margin-left: .5rem;
-}
-
-.chooseFile {
-  color: #f0f0f0;
-}
-
-.chooseFile::file-selector-button {
-  padding: .25rem .75rem;
-  border: solid 1px #f0f0f0;
-  font-family: inherit;
-  background-color: #222222;
-  color: #f0f0f0;
-  border-radius: 3px;
-  font-size: .85rem;
-  margin-right: .75rem;
-}
-
-.chooseFile::file-selector-button:hover {
-  filter: brightness(1.25);
-}
-
-.chooseFile::file-selector-button:active,
-.chooseFile::file-selector-button:focus,
-.chooseFile::file-selector-button:focus {
-  filter: brightness(1.5);
-}
-
-.filePath {
-  display: inline-block;
-  padding: 0 .25rem;
-  font-weight: 500;
-  color: #f0f0f0;
-  font-size: .75rem;
 }

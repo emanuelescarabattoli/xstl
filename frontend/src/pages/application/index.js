@@ -113,6 +113,12 @@ const Application = () => {
     }
   }
 
+  const onClickOpenWith = async () => {
+    if (filePath) {
+      await window.electronAPI.openWith(settings.openWithPath, filePath)
+    }
+  }
+
   return (
     <div ref={containerRef} className={style.mainWrapper}>
       <ErrorBoundary>
@@ -128,6 +134,7 @@ const Application = () => {
           onClickSettings={onClickSettings}
           onClickPreviousFile={onClickPreviousFile}
           onClickNextFile={onClickNextFile}
+          onClickOpenWith={onClickOpenWith}
         />
         <Canvas ref={canvasRef} style={{ width: '100%', height: '100%' }}>
           <Suspense fallback={<></>}>

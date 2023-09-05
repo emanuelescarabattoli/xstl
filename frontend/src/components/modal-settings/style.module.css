@@ -4,10 +4,10 @@
   box-shadow: 0 3px 5px 0 #08080844;
   border-radius: 3px;
   width: 600px;
-  height: 400px;
+  height: 500px;
   position: fixed;
   z-index: 999;
-  top: calc(50vh - 200px);
+  top: calc(50vh - 300px);
   left: calc(50vw - 300px);
 }
 

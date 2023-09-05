@@ -1,4 +1,4 @@
-const defaultSettings = { bedColor: "#336592", modelColor: "#cc8800", isBedVisible: true, isAxesVisible: false, bedSize: 220, bedGridCellSize: 10 };
+const defaultSettings = { bedColor: "#336592", modelColor: "#cc8800", isBedVisible: true, isAxesVisible: false, bedSize: 220, bedGridCellSize: 10, openWithPath: "" };
 
 export const parseSettings = () => {
   const settingsString = localStorage.getItem("settings");
