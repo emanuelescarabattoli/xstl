@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu } = require("electron")
 const path = require("path")
 const fs = require("fs");
+const { spawn } = require('child_process');
 
 const getArgvFile = argv => {
   if (!isDevelopmentEnv) {
@@ -14,7 +15,6 @@ const getPreviousFile = (event, filePath) => {
   const basename = path.basename(filePath);
   const dirname = path.dirname(filePath);
   const files = fs.readdirSync(dirname).filter(item => item.trim().toLocaleLowerCase().endsWith(".stl")).sort((a, b) => a > b ? 1 : -1);
-  console.log(files);
   let index = files.indexOf(basename) + 1;
   if (index > files.length - 1) index = 0;
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
@@ -27,6 +27,11 @@ const getNextFile = (event, filePath) => {
   let index = files.indexOf(basename) - 1;
   if (index < 0) index = files.length - 1;
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
+};
+
+const openWith = (event, executable, filePath) => {
+  spawn(executable, [filePath])
+  return undefined;
 };
 
 const isDevelopmentEnv = process.env.ENV === "development";
@@ -76,6 +81,7 @@ app.whenReady().then(() => {
   ipcMain.handle("get-argv-file", () => getArgvFile(process.argv))
   ipcMain.handle("get-previous-file", getPreviousFile)
   ipcMain.handle("get-next-file", getNextFile)
+  ipcMain.handle("open-with", openWith)
 
   if (process.env.ENV !== 'development') {
     Menu.setApplicationMenu(null)
