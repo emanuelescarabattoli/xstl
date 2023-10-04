@@ -60,14 +60,19 @@ ul.menu li a:hover {
   color: #E9D0C6;
   text-decoration: none;
   font-size: 1.5rem;
+  transition: all linear 200ms;
+  text-shadow: none;
+  transform: scale(1);
 }
 
 .github-link:hover {
   color: #ecdbd4;
+  text-shadow: 0 0 10px #BC6642;
+  transform: scale(1.1);
 }
 
 .hero-section {
-  background: radial-gradient(99.42% 596.25% at 0.58% 98.27%, #BC6642 0%, #272A41 100%);
+  background-color: #BC6642;
   height: 100vh;
 }
 
@@ -119,6 +124,7 @@ ul.hero-actions li {
   user-select: none;
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 2px 2px 0 #00000055;
 }
 
 .download-button:hover {
