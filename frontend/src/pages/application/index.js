@@ -20,6 +20,7 @@ const Application = () => {
   const canvasRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState([100, 100, 100])
   const [settings, setSetting] = useState(parseSettings())
+  const orbitRef = useRef(null);
 
   const readFile = toReadFile => {
     const reader = new FileReader();
@@ -74,18 +75,22 @@ const Application = () => {
   }
 
   const onClickSideX = () => {
+    orbitRef?.current?.reset();
     setCameraPosition(() => [0, 0, 100])
   }
 
   const onClickSideY = () => {
+    orbitRef?.current?.reset();
     setCameraPosition(() => [0, 100, 0])
   }
 
   const onClickSideZ = () => {
+    orbitRef?.current?.reset();
     setCameraPosition(() => [100, 0, 0])
   }
 
   const onClickResetPosition = () => {
+    orbitRef?.current?.reset();
     setCameraPosition(() => [100, 100, 100])
   }
 
@@ -140,7 +145,7 @@ const Application = () => {
           <Suspense fallback={<></>}>
             <Bed bedSize={settings.bedSize} cellSize={settings.bedGridCellSize} isVisible={settings.isBedVisible} color={settings.bedColor} />
             {filePath ? <Model file={file} color={settings.modelColor} /> : <></>}
-            <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+            <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} ref={orbitRef}/>
             <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} />
           </Suspense>
         </Canvas>

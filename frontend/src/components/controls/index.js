@@ -33,7 +33,7 @@ const Controls = ({
                 <Button onClick={onClickNextFile} text={<Icon name="chevron-right" />} accessKey="x" />
               </Tooltip>
               <Tooltip text="Open with external application">
-                <Button onClick={onClickOpenWith} text={<Icon name="external-link" />} accessKey="z" />
+                <Button onClick={onClickOpenWith} text={<Icon name="external-link" />} />
               </Tooltip>
             </>
           ) : <></>
