@@ -83,7 +83,7 @@ app.whenReady().then(() => {
   ipcMain.handle("get-next-file", getNextFile)
   ipcMain.handle("open-with", openWith)
 
-  if (process.env.ENV === 'development') {
+  if (process.env.ENV !== 'development') {
     Menu.setApplicationMenu(null)
   }
 
