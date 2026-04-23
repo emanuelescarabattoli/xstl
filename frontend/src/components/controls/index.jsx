@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-access-key */
 
 import style from "./style.module.css"
+import { useState } from 'react'
 import Button from "../button"
 import Tooltip from "../tooltip"
 import Icon from "../icon"
@@ -14,6 +15,8 @@ const Controls = ({
   isWireframe,
   isMeasureMode,
   measureDistance,
+  snapshotScale,
+  snapshotTransparentBg,
   onChangeFile,
   onClickZoomIn,
   onClickZoomOut,
@@ -27,10 +30,47 @@ const Controls = ({
   onClickToggleWireframe,
   onClickToggleMeasureMode,
   onClearMeasurement,
+  onChangeSnapshotScale,
+  onChangeSnapshotTransparentBg,
+  onClickExportSnapshot,
   onClickPreviousFile,
   onClickNextFile,
   onClickOpenWith,
 }) => {
+  const [isSnapshotOptionsVisible, setIsSnapshotOptionsVisible] = useState(false)
+  const [isMeasureOptionsVisible, setIsMeasureOptionsVisible] = useState(false)
+
+  const onClickToggleMeasureOptions = () => {
+    setIsMeasureOptionsVisible(previous => {
+      const next = !previous
+
+      if (next) {
+        setIsSnapshotOptionsVisible(false)
+      }
+
+      if (next !== isMeasureMode) {
+        onClickToggleMeasureMode()
+      }
+
+      return next
+    })
+  }
+
+  const onClickToggleSnapshotOptions = () => {
+    setIsSnapshotOptionsVisible(previous => {
+      const next = !previous
+
+      if (next && isMeasureOptionsVisible) {
+        setIsMeasureOptionsVisible(false)
+        if (isMeasureMode) {
+          onClickToggleMeasureMode()
+        }
+      }
+
+      return next
+    })
+  }
+
   return (
     <div className={`${style.controlsWrapper} ${isVisible ? style.visible : style.hidden}`}>
       <div>
@@ -72,18 +112,40 @@ const Controls = ({
           <Button onClick={onClickToggleWireframe} text={<Icon name={isWireframe ? "border-all" : "cubes"} />} />
         </Tooltip>
       </div>
-      <div className={style.measureControls}>
-        <Tooltip text={isMeasureMode ? "Disable measure mode" : "Enable measure mode"}>
-          <Button onClick={onClickToggleMeasureMode} text={<Icon name="ruler-combined" />} />
-        </Tooltip>
-        {isMeasureMode ? (
-          <>
-            <span className={style.measureReadout}>{measureDistance === null ? "Pick 2 points" : `${measureDistance.toFixed(2)} mm`}</span>
-            <Tooltip text="Clear measurement">
-              <Button onClick={onClearMeasurement} text={<Icon name="xmark" />} />
-            </Tooltip>
-          </>
-        ) : null}
+      <div>
+        <div className={style.measureWrapper}>
+          <Tooltip text="Measurement options" isVisible={!isMeasureOptionsVisible}>
+            <Button onClick={onClickToggleMeasureOptions} text={<Icon name="ruler-combined" />} />
+          </Tooltip>
+          {isMeasureOptionsVisible ? (
+            <div className={style.measurePopover}>
+              <span className={style.measureReadout}>{measureDistance === null ? "Pick 2 points" : `${measureDistance.toFixed(2)} mm`}</span>
+              <Button onClick={onClearMeasurement} text="Clear" />
+            </div>
+          ) : null}
+        </div>
+        <div className={style.snapshotWrapper}>
+          <Tooltip text="Snapshot options" isVisible={!isSnapshotOptionsVisible}>
+            <Button onClick={onClickToggleSnapshotOptions} text={<Icon name="camera" />} />
+          </Tooltip>
+          {isSnapshotOptionsVisible ? (
+            <div className={style.snapshotPopover}>
+              <label className={style.snapshotLabel}>
+                Resolution
+                <select className={style.snapshotSelect} value={snapshotScale} onChange={event => onChangeSnapshotScale(Number(event.target.value))}>
+                  <option value={1}>1x</option>
+                  <option value={2}>2x</option>
+                  <option value={4}>4x</option>
+                </select>
+              </label>
+              <label className={style.snapshotLabelInline}>
+                <input type="checkbox" checked={snapshotTransparentBg} onChange={event => onChangeSnapshotTransparentBg(event.target.checked)} />
+                Transparent
+              </label>
+              <Button onClick={onClickExportSnapshot} text="Export PNG" />
+            </div>
+          ) : null}
+        </div>
       </div>
       <div>
         <Button onClick={onClickSettings} text={<Icon name="cog" />} />

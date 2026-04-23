@@ -21,6 +21,7 @@
   padding: .5rem;
   font-size: .85rem;
   position: absolute;
+  z-index: 1200;
   display: inline-block;
   background-color: #222222;
   color: #f0f0f0;

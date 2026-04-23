@@ -13,6 +13,7 @@ import Controls from '../../components/controls'
 import ErrorBoundary from '../../components/error-boundary'
 import ModalSettings from '../../components/modal-settings'
 import { saveSettings, parseSettings } from '../../utils/settings'
+import { getFileName } from '../../utils'
 
 const getDefaultCameraPosition = (bedSize = 220) => {
   const distance = Math.max(140, Math.round(bedSize * 0.8));
@@ -48,11 +49,17 @@ const Application = () => {
   const [isWireframe, setIsWireframe] = useState(false)
   const [isMeasureMode, setIsMeasureMode] = useState(false)
   const [measurePoints, setMeasurePoints] = useState([])
+  const [snapshotScale, setSnapshotScale] = useState(1)
+  const [snapshotTransparentBg, setSnapshotTransparentBg] = useState(false)
   const [settings, setSetting] = useState(parseSettings())
   const containerRef = useRef(null);
+  const rendererRef = useRef(null);
+  const sceneRef = useRef(null);
+  const cameraRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState(() => getDefaultCameraPosition(settings.bedSize))
   const orbitRef = useRef(null);
   const controlsHideTimeoutRef = useRef(null);
+  const isExportingRef = useRef(false);
 
   const clearControlsHideTimeout = () => {
     if (controlsHideTimeoutRef.current) {
@@ -255,9 +262,87 @@ const Application = () => {
     await document.exitFullscreen?.()
   }
 
-  const onCanvasCreated = ({ gl }) => {
+  const onClickExportSnapshot = () => {
+    // Debounce: prevent multiple simultaneous exports
+    if (isExportingRef.current) return
+    isExportingRef.current = true
+
+    const renderer = rendererRef.current
+    const scene = sceneRef.current
+    const camera = cameraRef.current
+
+    if (!renderer || !scene || !camera) {
+      isExportingRef.current = false
+      return
+    }
+
+    const currentSize = renderer.getSize(new THREE.Vector2())
+    const currentPixelRatio = renderer.getPixelRatio()
+    const clearColor = renderer.getClearColor(new THREE.Color()).clone()
+    const clearAlpha = renderer.getClearAlpha()
+    const containerBackground = window.getComputedStyle(containerRef.current).backgroundColor || "#111111"
+    const sceneBackgroundColor = scene.background?.isColor ? `#${scene.background.getHexString()}` : containerBackground
+
+    const previousAspect = camera.isPerspectiveCamera ? camera.aspect : null
+
+    try {
+      renderer.setPixelRatio(currentPixelRatio * snapshotScale)
+      renderer.setSize(currentSize.x, currentSize.y, false)
+
+      if (snapshotTransparentBg) {
+        renderer.setClearColor(clearColor, 0)
+        renderer.setClearAlpha(0)
+      } else {
+        renderer.setClearColor(sceneBackgroundColor, 1)
+      }
+
+      if (camera.isPerspectiveCamera) {
+        camera.aspect = currentSize.x / currentSize.y
+        camera.updateProjectionMatrix()
+      }
+
+      renderer.render(scene, camera)
+
+      const dataUrl = renderer.domElement.toDataURL("image/png")
+
+      // Format date as yyyy-mm-dd-hh-mm-ss
+      const now = new Date()
+      const dateStr = now.toISOString().split('T')[0] // yyyy-mm-dd
+      const timeStr = now.toTimeString().slice(0, 8).replace(/:/g, '-') // hh-mm-ss
+      const dateFormatted = `${dateStr}-${timeStr}`
+
+      // Export scale (1x, 2x, 4x, etc.)
+      const scaleStr = `${snapshotScale}x`
+
+      const baseName = getFileName(filePath || "snapshot").replace(/\.[^/.]+$/, "") || "snapshot"
+      const anchor = document.createElement("a")
+      anchor.href = dataUrl
+      anchor.download = `${baseName}_${scaleStr}_${dateFormatted}.png`
+      document.body.appendChild(anchor)
+      anchor.click()
+      anchor.remove()
+    } finally {
+      isExportingRef.current = false
+      renderer.setPixelRatio(currentPixelRatio)
+      renderer.setSize(currentSize.x, currentSize.y, false)
+      renderer.setClearColor(clearColor, clearAlpha)
+
+      if (camera.isPerspectiveCamera && previousAspect) {
+        camera.aspect = previousAspect
+        camera.updateProjectionMatrix()
+      }
+
+      renderer.render(scene, camera)
+    }
+  }
+
+  const onCanvasCreated = ({ gl, scene, camera }) => {
     gl.toneMapping = THREE.ACESFilmicToneMapping
     gl.toneMappingExposure = 1.12
+
+    rendererRef.current = gl
+    sceneRef.current = scene
+    cameraRef.current = camera
 
     if ('outputColorSpace' in gl) {
       gl.outputColorSpace = THREE.SRGBColorSpace
@@ -301,6 +386,11 @@ const Application = () => {
           measureDistance={measureDistance}
           onClickToggleMeasureMode={onClickToggleMeasureMode}
           onClearMeasurement={onClearMeasurement}
+          snapshotScale={snapshotScale}
+          snapshotTransparentBg={snapshotTransparentBg}
+          onChangeSnapshotScale={value => setSnapshotScale(value)}
+          onChangeSnapshotTransparentBg={value => setSnapshotTransparentBg(value)}
+          onClickExportSnapshot={onClickExportSnapshot}
         />
         <Canvas
           style={{ width: '100%', height: '100%' }}
