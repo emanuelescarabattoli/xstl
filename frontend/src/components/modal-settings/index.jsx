@@ -5,6 +5,14 @@ import InputNumeric from "../input-numeric"
 import InputFile from '../input-file'
 
 const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, settings }) => {
+  const onChangeExternalApplication = event => {
+    const selectedFile = event.target.files?.[0]
+    if (!selectedFile) return
+
+    const selectedPath = window.electronAPI?.getPathForFile?.(selectedFile) || selectedFile.path || selectedFile.name
+    onChangeSettings("openWithPath", selectedPath)
+  }
+
   return (
     <div className={style.popupContainer} style={{ display: isVisible ? "block" : "none" }}>
       <span className={style.title}>{title}</span>
@@ -77,7 +85,7 @@ const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, setti
               <span className={style.columnLabel}>External application</span>
             </div>
             <div className={style.sectionColumn}>
-              <InputFile value={settings.openWithPath} onChange={event => onChangeSettings("openWithPath", event.target.files[0].path)} />
+              <InputFile value={settings?.openWithPath} onChange={onChangeExternalApplication} />
             </div>
           </div>
         </div>

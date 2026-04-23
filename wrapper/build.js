@@ -3,7 +3,7 @@ const fs = require("fs");
 const fse = require('fs-extra');
 
 const prebuild = () => {
-  const frontendSourcePath = path.join(__dirname, "../frontend/build");
+  const frontendSourcePath = path.join(__dirname, "../frontend/dist");
   const frontendDestinationPath = path.join(__dirname, "./frontend-build");
   fs.rmSync(frontendDestinationPath, { recursive: true, force: true });
   fs.mkdirSync(frontendDestinationPath);
@@ -11,7 +11,7 @@ const prebuild = () => {
 }
 
 const postbuild = () => {
-  const frontendSourcePath = path.join(__dirname, "../frontend/build");
+  const frontendSourcePath = path.join(__dirname, "../frontend/dist");
   const frontendDestinationPath = path.join(__dirname, "./frontend-build");
   fs.rmSync(frontendSourcePath, { recursive: true, force: true });
   fs.rmSync(frontendDestinationPath, { recursive: true, force: true });

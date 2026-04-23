@@ -5,22 +5,23 @@
     "email": "example@example.com"
   },
   "name": "Xstl",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "main": "main.js",
   "license": "MIT",
   "icon": "icon.ico",
   "description": "An STL file viewer",
   "displayName": "Xstl",
   "devDependencies": {
-    "electron-builder": "^23.6.0",
-    "electron": "^24.1.2",
-    "fs-extra": "^11.1.1"
+    "electron": "^41.2.2",
+    "electron-builder": "^26.8.1",
+    "electron-builder-squirrel-windows": "^26.8.1",
+    "fs-extra": "^11.3.4"
   },
   "scripts": {
-    "start": "ENV=development electron .",
-    "build-app-image": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux appImage && node ./build postbuild",
-    "build-deb": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --linux deb && node ./build postbuild",
-    "build-win": "cd ../frontend && yarn build && cd ../wrapper && node ./build prebuild && electron-builder --win && node ./build postbuild"
+    "dev": "ENV=development electron .",
+    "build-app-image": "cd ../frontend && pnpm build && cd ../wrapper && node ./build prebuild && electron-builder --linux appImage && node ./build postbuild",
+    "build-deb": "cd ../frontend && pnpm build && cd ../wrapper && node ./build prebuild && electron-builder --linux deb && node ./build postbuild",
+    "build-win": "cd ../frontend && pnpm build && cd ../wrapper && node ./build prebuild && electron-builder --win && node ./build postbuild"
   },
   "build": {
     "appId": "com.xstl.app",

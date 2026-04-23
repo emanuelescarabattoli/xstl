@@ -2,7 +2,7 @@
 
 # Xstl, a free and open-source STL viewer
 
-Xstl is a free and open-source STL viewer for Linux and Windows, build with modern tools, Electron and React. With Xstl you can open an STL file and navigate trough a directory to see all the STL files on it, buy using buttons or with a shortcut (`alt+z` and `alt+x`). The default view is isometric, so you can see all the details of your model.
+Xstl is a free and open-source STL viewer for Linux and Windows, built with modern tools, Electron and React. With Xstl you can open an STL file and navigate through a directory to see all STL files in it, using buttons or keyboard shortcuts (`Arrow Left` and `Arrow Right`). The default view is isometric, so you can see all the details of your model.
 
 <img src="./docs/assets/images/screen-main.png" alt="Settings"/>
 
@@ -32,61 +32,69 @@ To set Xstl as default STL files viewer on Linux:
 
 ## Build instructions
 
-Here the instructions to build the project:
+Here are the instructions to build the project.
 
-- Change the version in `./xstl/wrapper/package.json`, if you want to perform a release
+- Use Node.js 18+ (recommended Node.js 20+)
+- Change the version in `./wrapper/package.json` if you want to perform a release
 
-- Navigate to xtl code folder, wrapper sub-directory
+- From the repository root, install frontend dependencies using pnpm
 ```
-cd ./xstl/wrapper
+cd ./frontend
+pnpm install
 ```
-- Install packages using yarn
+
+- Then install wrapper dependencies using npm
 ```
-yarn install
+cd ../wrapper
+npm install
 ```
-- To build deb package
+
+- To build Debian package
 ```
-yarn build-deb
+npm run build-deb
 ```
+
 - To build AppImage package
 ```
-yarn build-app-image
-
+npm run build-app-image
 ```
+
 - To build Windows setup package
 ```
-yarn build-win
-
+npm run build-win
 ```
 
 ## Local setup
 
-To run the project locally, after cloning it, do the following
+To run the project locally after cloning it, do the following.
 
-- Open a terminal, navigate to the frontend directory and install dependencies using yarn
+- In a first terminal, navigate to the frontend directory and install dependencies using pnpm
 ```
-cd frontned
-yarn install
+cd frontend
+pnpm install
 ```
-- Run the React project
+
+- Run the frontend dev server
 ```
-yarn start
+pnpm dev
 ```
-- You can close the browser tab that will open up
-- In another terminal, navigate to the electron application directory and install dependencies using yarn
+
+- In a second terminal, navigate to the wrapper directory and install dependencies using npm
 ```
 cd wrapper
-yarn install
+npm install
 ```
-- Run the project
+
+- Run the Electron wrapper in development mode
 ```
-yarn start
+npm run dev
 ```
+
 - Now the application is running locally
 
 ## Contribute
 
-Feel free yo contribute to this project here https://github.com/emanuelescarabattoli/xstl/pulls or open an issue here https://github.com/emanuelescarabattoli/xstl/issues
+Feel free to contribute to this project here https://github.com/emanuelescarabattoli/xstl/pulls or open an issue here https://github.com/emanuelescarabattoli/xstl/issues
 
 ## License
 

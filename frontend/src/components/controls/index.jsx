@@ -8,6 +8,8 @@ import InputFile from "../input-file"
 
 const Controls = ({
   filePath,
+  isVisible,
+  isFullscreen,
   onChangeFile,
   onClickZoomIn,
   onClickZoomOut,
@@ -16,21 +18,22 @@ const Controls = ({
   onClickSideZ,
   onClickResetPosition,
   onClickSettings,
+  onClickToggleFullscreen,
   onClickPreviousFile,
   onClickNextFile,
   onClickOpenWith,
 }) => {
   return (
-    <div className={style.controlsWrapper}>
+    <div className={`${style.controlsWrapper} ${isVisible ? style.visible : style.hidden}`}>
       <div>
         {
           filePath ? (
             <>
-              <Tooltip text="Alt + Z">
-                <Button onClick={onClickPreviousFile} text={<Icon name="chevron-left" />} accessKey="z" />
+              <Tooltip text="Arrow Left">
+                <Button onClick={onClickPreviousFile} text={<Icon name="chevron-left" />} />
               </Tooltip>
-              <Tooltip text="Alt + X">
-                <Button onClick={onClickNextFile} text={<Icon name="chevron-right" />} accessKey="x" />
+              <Tooltip text="Arrow Right">
+                <Button onClick={onClickNextFile} text={<Icon name="chevron-right" />} />
               </Tooltip>
               <Tooltip text="Open with external application">
                 <Button onClick={onClickOpenWith} text={<Icon name="external-link" />} />
@@ -49,6 +52,9 @@ const Controls = ({
         <Button onClick={onClickSideY} text={<Icon name="y" />} />
         <Button onClick={onClickSideZ} text={<Icon name="z" />} />
         <Button onClick={onClickResetPosition} text={<Icon name="rotate-left" />} />
+        <Tooltip text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
+          <Button onClick={onClickToggleFullscreen} text={<Icon name={isFullscreen ? "compress" : "expand"} />} />
+        </Tooltip>
       </div>
       <div>
         <Button onClick={onClickSettings} text={<Icon name="cog" />} />

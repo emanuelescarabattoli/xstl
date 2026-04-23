@@ -12,20 +12,30 @@ const getArgvFile = argv => {
 };
 
 const getPreviousFile = (event, filePath) => {
+  if (!filePath || !path.isAbsolute(filePath)) return undefined;
   const basename = path.basename(filePath);
   const dirname = path.dirname(filePath);
   const files = fs.readdirSync(dirname).filter(item => item.trim().toLocaleLowerCase().endsWith(".stl")).sort((a, b) => a > b ? 1 : -1);
+  if (!files.length) return undefined;
+
   let index = files.indexOf(basename) + 1;
   if (index > files.length - 1) index = 0;
+  if (files[index] === undefined) return undefined;
+
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
 };
 
 const getNextFile = (event, filePath) => {
+  if (!filePath || !path.isAbsolute(filePath)) return undefined;
   const basename = path.basename(filePath);
   const dirname = path.dirname(filePath);
   const files = fs.readdirSync(dirname).filter(item => item.trim().toLocaleLowerCase().endsWith(".stl")).sort((a, b) => a > b ? 1 : -1);;
+  if (!files.length) return undefined;
+
   let index = files.indexOf(basename) - 1;
   if (index < 0) index = files.length - 1;
+  if (files[index] === undefined) return undefined;
+
   return { content: fs.readFileSync(path.join(dirname, files[index])), name: path.join(dirname, files[index]) };
 };
 
@@ -71,7 +81,7 @@ const productionSettings = {
 const createWindow = () => {
   const mainWindow = new BrowserWindow(isDevelopmentEnv ? developmentSettings : productionSettings)
   if (isDevelopmentEnv) {
-    mainWindow.loadURL("http://localhost:3000/");
+    mainWindow.loadURL("http://localhost:5173/");
   } else {
     mainWindow.loadFile(path.join(__dirname, "frontend-build", "index.html"));
   }

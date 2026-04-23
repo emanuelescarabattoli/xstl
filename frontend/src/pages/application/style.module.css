@@ -5,3 +5,7 @@
   background-color: #111111;
   position: relative;
 }
+
+.hideCursor {
+  cursor: none;
+}
