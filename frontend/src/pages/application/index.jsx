@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { Canvas } from '@react-three/fiber'
-import { useEffect, useRef, Suspense, useState } from 'react'
+import { useEffect, useMemo, useRef, Suspense, useState } from 'react'
 import * as THREE from 'three'
 import style from "./style.module.css"
 import { OrbitControls } from "@react-three/drei"
@@ -46,6 +46,8 @@ const Application = () => {
   const [isControlsVisible, setIsControlsVisible] = useState(true)
   const [isPerspective, setIsPerspective] = useState(true)
   const [isWireframe, setIsWireframe] = useState(false)
+  const [isMeasureMode, setIsMeasureMode] = useState(false)
+  const [measurePoints, setMeasurePoints] = useState([])
   const [settings, setSetting] = useState(parseSettings())
   const containerRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState(() => getDefaultCameraPosition(settings.bedSize))
@@ -230,6 +232,20 @@ const Application = () => {
 
   const onClickToggleWireframe = () => setIsWireframe(v => !v)
 
+  const onClickToggleMeasureMode = () => {
+    setIsMeasureMode(value => !value)
+    setMeasurePoints([])
+  }
+
+  const onClearMeasurement = () => setMeasurePoints([])
+
+  const onAddMeasurePoint = point => {
+    setMeasurePoints(previous => {
+      if (previous.length >= 2) return [point]
+      return [...previous, point]
+    })
+  }
+
   const onClickToggleFullscreen = async () => {
     if (!document.fullscreenElement) {
       await containerRef.current?.requestFullscreen?.()
@@ -249,6 +265,14 @@ const Application = () => {
   }
 
   const shouldHideCursor = isFullscreen && !isControlsVisible
+  const measureDistance = useMemo(() => {
+    if (measurePoints.length !== 2) return null
+    const [a, b] = measurePoints
+    const dx = b[0] - a[0]
+    const dy = b[1] - a[1]
+    const dz = b[2] - a[2]
+    return Math.sqrt(dx * dx + dy * dy + dz * dz)
+  }, [measurePoints])
 
   return (
     <div ref={containerRef} className={`${style.mainWrapper} ${shouldHideCursor ? style.hideCursor : ""}`}>
@@ -273,6 +297,10 @@ const Application = () => {
           onClickTogglePerspective={onClickTogglePerspective}
           isWireframe={isWireframe}
           onClickToggleWireframe={onClickToggleWireframe}
+          isMeasureMode={isMeasureMode}
+          measureDistance={measureDistance}
+          onClickToggleMeasureMode={onClickToggleMeasureMode}
+          onClearMeasurement={onClearMeasurement}
         />
         <Canvas
           style={{ width: '100%', height: '100%' }}
@@ -282,7 +310,7 @@ const Application = () => {
         >
           <Bed bedSize={settings.bedSize} cellSize={settings.bedGridCellSize} isVisible={settings.isBedVisible} color={settings.bedColor} />
           <Suspense fallback={<Loader bedSize={settings.bedSize} color={settings.modelColor} />}>
-            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} isWireframe={isWireframe} /> : <></>}
+            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} isWireframe={isWireframe} isMeasureMode={isMeasureMode} measurePoints={measurePoints} measureDistance={measureDistance} onAddMeasurePoint={onAddMeasurePoint} /> : <></>}
           </Suspense>
           <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} maxDistance={9000} minZoom={0.001} maxZoom={400} ref={orbitRef}/>
           <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} isPerspective={isPerspective} orbitRef={orbitRef} />

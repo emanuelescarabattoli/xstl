@@ -12,6 +12,8 @@ const Controls = ({
   isFullscreen,
   isPerspective,
   isWireframe,
+  isMeasureMode,
+  measureDistance,
   onChangeFile,
   onClickZoomIn,
   onClickZoomOut,
@@ -23,6 +25,8 @@ const Controls = ({
   onClickToggleFullscreen,
   onClickTogglePerspective,
   onClickToggleWireframe,
+  onClickToggleMeasureMode,
+  onClearMeasurement,
   onClickPreviousFile,
   onClickNextFile,
   onClickOpenWith,
@@ -50,21 +54,36 @@ const Controls = ({
       <div>
         <Button onClick={onClickZoomIn} text={<Icon name="plus" />} />
         <Button onClick={onClickZoomOut} text={<Icon name="minus" />} />
+        <Tooltip text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
+          <Button onClick={onClickToggleFullscreen} text={<Icon name={isFullscreen ? "compress" : "expand"} />} />
+        </Tooltip>
       </div>
       <div>
         <Button onClick={onClickSideX} text={<Icon name="x" />} />
         <Button onClick={onClickSideY} text={<Icon name="y" />} />
         <Button onClick={onClickSideZ} text={<Icon name="z" />} />
         <Button onClick={onClickResetPosition} text={<Icon name="rotate-left" />} />
+      </div>
+      <div>
         <Tooltip text={isPerspective ? "Switch to orthographic" : "Switch to perspective"}>
           <Button onClick={onClickTogglePerspective} text={<Icon name={isPerspective ? "cube" : "square"} />} />
         </Tooltip>
         <Tooltip text={isWireframe ? "Disable wireframe" : "Enable wireframe"}>
           <Button onClick={onClickToggleWireframe} text={<Icon name={isWireframe ? "border-all" : "cubes"} />} />
         </Tooltip>
-        <Tooltip text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
-          <Button onClick={onClickToggleFullscreen} text={<Icon name={isFullscreen ? "compress" : "expand"} />} />
+      </div>
+      <div className={style.measureControls}>
+        <Tooltip text={isMeasureMode ? "Disable measure mode" : "Enable measure mode"}>
+          <Button onClick={onClickToggleMeasureMode} text={<Icon name="ruler-combined" />} />
         </Tooltip>
+        {isMeasureMode ? (
+          <>
+            <span className={style.measureReadout}>{measureDistance === null ? "Pick 2 points" : `${measureDistance.toFixed(2)} mm`}</span>
+            <Tooltip text="Clear measurement">
+              <Button onClick={onClearMeasurement} text={<Icon name="xmark" />} />
+            </Tooltip>
+          </>
+        ) : null}
       </div>
       <div>
         <Button onClick={onClickSettings} text={<Icon name="cog" />} />

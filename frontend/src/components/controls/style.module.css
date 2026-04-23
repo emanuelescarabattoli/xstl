@@ -38,3 +38,16 @@
   pointer-events: none;
   transition: opacity 220ms ease-out;
 }
+
+.measureReadout {
+  color: #f0f0f0;
+  font-size: .8rem;
+  min-width: 6.5em;
+  text-align: center;
+  display: inline-block;
+}
+
+.measureControls {
+  display: flex;
+  align-items: center;
+}
