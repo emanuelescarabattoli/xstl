@@ -10,6 +10,7 @@ const Controls = ({
   filePath,
   isVisible,
   isFullscreen,
+  isPerspective,
   onChangeFile,
   onClickZoomIn,
   onClickZoomOut,
@@ -19,6 +20,7 @@ const Controls = ({
   onClickResetPosition,
   onClickSettings,
   onClickToggleFullscreen,
+  onClickTogglePerspective,
   onClickPreviousFile,
   onClickNextFile,
   onClickOpenWith,
@@ -52,6 +54,9 @@ const Controls = ({
         <Button onClick={onClickSideY} text={<Icon name="y" />} />
         <Button onClick={onClickSideZ} text={<Icon name="z" />} />
         <Button onClick={onClickResetPosition} text={<Icon name="rotate-left" />} />
+        <Tooltip text={isPerspective ? "Switch to orthographic" : "Switch to perspective"}>
+          <Button onClick={onClickTogglePerspective} text={<Icon name={isPerspective ? "cube" : "square"} />} />
+        </Tooltip>
         <Tooltip text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
           <Button onClick={onClickToggleFullscreen} text={<Icon name={isFullscreen ? "compress" : "expand"} />} />
         </Tooltip>

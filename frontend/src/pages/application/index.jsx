@@ -44,9 +44,9 @@ const Application = () => {
   const [isSettingsVisible, setIsSettingsVisible] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isControlsVisible, setIsControlsVisible] = useState(true)
+  const [isPerspective, setIsPerspective] = useState(true)
   const [settings, setSetting] = useState(parseSettings())
   const containerRef = useRef(null);
-  const canvasRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState(() => getDefaultCameraPosition(settings.bedSize))
   const orbitRef = useRef(null);
   const controlsHideTimeoutRef = useRef(null);
@@ -88,10 +88,6 @@ const Application = () => {
         setModelSource(source, argsFile.path || argsFile.name)
       }
     }
-    const container = containerRef.current;
-    const canvas = canvasRef.current;
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
     getArgvFile()
     window.electronAPI.onFileReceived(async argvFile => {
       await getArgvFile(argvFile)
@@ -224,6 +220,13 @@ const Application = () => {
     }
   }
 
+  const onClickTogglePerspective = () => {
+    const defaultPosition = getDefaultCameraPosition(settings.bedSize)
+    orbitRef?.current?.reset()
+    setCameraPosition(defaultPosition)
+    setIsPerspective(v => !v)
+  }
+
   const onClickToggleFullscreen = async () => {
     if (!document.fullscreenElement) {
       await containerRef.current?.requestFullscreen?.()
@@ -263,9 +266,10 @@ const Application = () => {
           onClickPreviousFile={onClickPreviousFile}
           onClickNextFile={onClickNextFile}
           onClickOpenWith={onClickOpenWith}
+          isPerspective={isPerspective}
+          onClickTogglePerspective={onClickTogglePerspective}
         />
         <Canvas
-          ref={canvasRef}
           style={{ width: '100%', height: '100%' }}
           gl={{ antialias: true }}
           camera={{ near: 0.1, far: 20000, fov: 70 }}
@@ -275,8 +279,8 @@ const Application = () => {
           <Suspense fallback={<Loader bedSize={settings.bedSize} color={settings.modelColor} />}>
             {file ? <Model key={filePath || file} file={file} color={settings.modelColor} /> : <></>}
           </Suspense>
-          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} maxDistance={9000} ref={orbitRef}/>
-          <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} />
+          <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} maxDistance={9000} minZoom={0.001} maxZoom={400} ref={orbitRef}/>
+          <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} isPerspective={isPerspective} orbitRef={orbitRef} />
         </Canvas>
         <ModalSettings
           isVisible={isSettingsVisible}
