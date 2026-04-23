@@ -3,6 +3,7 @@ import style from "./style.module.css"
 import Button from "../button"
 import InputNumeric from "../input-numeric"
 import InputFile from '../input-file'
+import ColorSelector from '../color-selector'
 
 const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, settings }) => {
   const onChangeExternalApplication = event => {
@@ -20,29 +21,17 @@ const ModalSettings = ({ onCLickClose, isVisible, title, onChangeSettings, setti
         <div className={style.sectionWrapper}>
           <span className={style.sectionTitle}>Colors</span>
           <div className={style.sectionColumns}>
-            <div className={style.sectionColumn}>
-              <span className={style.columnLabel}>Bed color</span>
+            <ColorSelector
+              label="Bed color"
+              value={settings?.bedColor}
+              onChange={value => onChangeSettings("bedColor", value)}
+              />
+            <ColorSelector
+              label="Model color"
+              value={settings?.modelColor}
+              onChange={value => onChangeSettings("modelColor", value)}
+              />
             </div>
-            <div className={style.sectionColumn}>
-              <button className={style.buttonColor} style={{ backgroundColor: "#336592" }} onClick={() => onChangeSettings("bedColor", "#336592")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#cc8800" }} onClick={() => onChangeSettings("bedColor", "#cc8800")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#770000" }} onClick={() => onChangeSettings("bedColor", "#770000")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#111111" }} onClick={() => onChangeSettings("bedColor", "#111111")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#007700" }} onClick={() => onChangeSettings("bedColor", "#007700")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#000077" }} onClick={() => onChangeSettings("bedColor", "#000077")} />
-            </div>
-            <div className={style.sectionColumn}>
-              <span className={style.columnLabel}>Model color</span>
-            </div>
-            <div className={style.sectionColumn}>
-              <button className={style.buttonColor} style={{ backgroundColor: "#336592" }} onClick={() => onChangeSettings("modelColor", "#336592")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#cc8800" }} onClick={() => onChangeSettings("modelColor", "#cc8800")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#770000" }} onClick={() => onChangeSettings("modelColor", "#770000")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#111111" }} onClick={() => onChangeSettings("modelColor", "#111111")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#007700" }} onClick={() => onChangeSettings("modelColor", "#007700")} />
-              <button className={style.buttonColor} style={{ backgroundColor: "#000077" }} onClick={() => onChangeSettings("modelColor", "#000077")} />
-            </div>
-          </div>
         </div>
         <div className={style.sectionWrapper}>
           <span className={style.sectionTitle}>Elements visibility</span>

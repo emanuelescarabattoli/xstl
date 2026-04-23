@@ -1,0 +1,94 @@
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  display: block;
+  color: #f0f0f0;
+  padding-right: .5rem;
+}
+
+.colors {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.customTrigger {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  border: 1px solid #3a3a3a;
+  box-shadow: inset 0 0 0 1px #0f0f0f;
+}
+
+.pickerPopover {
+  position: absolute;
+  top: calc(100% + .4rem);
+  left: 0;
+  min-width: 210px;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: .55rem;
+  box-shadow: 0 8px 18px #00000088;
+  z-index: 12;
+}
+
+.previewRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.presetRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin-bottom: .55rem;
+}
+
+.presetButton {
+  width: .95rem;
+  height: .95rem;
+  border-radius: 50%;
+  border: 1px solid #404040;
+  cursor: pointer;
+  padding: 0;
+}
+
+.presetSelected {
+  outline: 1px solid #f0f0f0;
+  outline-offset: 1px;
+}
+
+.hexInput {
+  width: 100%;
+  border: 1px solid #3a3a3a;
+  background: #121212;
+  color: #f0f0f0;
+  border-radius: 4px;
+  padding: .25rem .45rem;
+}
+
+.sliderRow {
+  display: grid;
+  grid-template-columns: 16px 1fr 30px;
+  align-items: center;
+  gap: .4rem;
+  color: #f0f0f0;
+  font-size: .75rem;
+}
+
+.sliderRow + .sliderRow {
+  margin-top: .2rem;
+}
+
+.sliderRow input[type="range"] {
+  width: 100%;
+}
