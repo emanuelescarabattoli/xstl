@@ -4,6 +4,11 @@ import { useLoader } from '@react-three/fiber'
 import React, { useRef, useLayoutEffect, useMemo } from 'react'
 import * as THREE from "three";
 
+const getInvertedColor = sourceColor => {
+  const base = new THREE.Color(sourceColor)
+  return new THREE.Color(1 - base.r, 1 - base.g, 1 - base.b).getStyle()
+}
+
 const getGridLines = (bedSize, cellSize) => {
   const result = [];
   for (let index = cellSize; index <= bedSize - cellSize; index += cellSize) {
@@ -30,7 +35,7 @@ const Line = ({ start, end, color }) => {
   return (
     <line ref={ref}>
       <bufferGeometry />
-      <lineBasicMaterial color={color} transparent opacity={0.72} depthTest={true} toneMapped={false} />
+      <lineBasicMaterial color={color} transparent opacity={0.5} depthTest={true} toneMapped={false} />
     </line>
   )
 }
@@ -64,7 +69,7 @@ const Bed = ({ isVisible, bedSize = 220, cellSize = 10, color = "#336592" }) => 
   const plateExtrudeSettings = useMemo(() => ({ depth: plateThickness, bevelEnabled: false }), [plateThickness])
 
   const lines = getGridLines(bedSize, cellSize)
-  const gridColor = useMemo(() => new THREE.Color(color).offsetHSL(0, 0, 0.2).getStyle(), [color])
+  const gridColor = useMemo(() => getInvertedColor(color), [color])
 
   return (
     <group visible={isVisible}>
