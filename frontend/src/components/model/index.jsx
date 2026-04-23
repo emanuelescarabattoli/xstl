@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import ErrorBoundary from '../error-boundary';
 
-const Model = ({ file, color, yOffset = 0 }) => {
+const Model = ({ file, color, yOffset = 0, isWireframe = false }) => {
   const geom = useLoader(STLLoader, file)
   const geomRef = useRef();
 
@@ -35,6 +35,7 @@ const Model = ({ file, color, yOffset = 0 }) => {
           metalness={0.08}
           emissive={color}
           emissiveIntensity={0.015}
+          wireframe={isWireframe}
         />
       </mesh>
     </ErrorBoundary>

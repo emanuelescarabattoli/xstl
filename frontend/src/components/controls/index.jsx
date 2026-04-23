@@ -11,6 +11,7 @@ const Controls = ({
   isVisible,
   isFullscreen,
   isPerspective,
+  isWireframe,
   onChangeFile,
   onClickZoomIn,
   onClickZoomOut,
@@ -21,6 +22,7 @@ const Controls = ({
   onClickSettings,
   onClickToggleFullscreen,
   onClickTogglePerspective,
+  onClickToggleWireframe,
   onClickPreviousFile,
   onClickNextFile,
   onClickOpenWith,
@@ -56,6 +58,9 @@ const Controls = ({
         <Button onClick={onClickResetPosition} text={<Icon name="rotate-left" />} />
         <Tooltip text={isPerspective ? "Switch to orthographic" : "Switch to perspective"}>
           <Button onClick={onClickTogglePerspective} text={<Icon name={isPerspective ? "cube" : "square"} />} />
+        </Tooltip>
+        <Tooltip text={isWireframe ? "Disable wireframe" : "Enable wireframe"}>
+          <Button onClick={onClickToggleWireframe} text={<Icon name={isWireframe ? "border-all" : "cubes"} />} />
         </Tooltip>
         <Tooltip text={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}>
           <Button onClick={onClickToggleFullscreen} text={<Icon name={isFullscreen ? "compress" : "expand"} />} />

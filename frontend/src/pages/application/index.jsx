@@ -45,6 +45,7 @@ const Application = () => {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isControlsVisible, setIsControlsVisible] = useState(true)
   const [isPerspective, setIsPerspective] = useState(true)
+  const [isWireframe, setIsWireframe] = useState(false)
   const [settings, setSetting] = useState(parseSettings())
   const containerRef = useRef(null);
   const [cameraPosition, setCameraPosition] = useState(() => getDefaultCameraPosition(settings.bedSize))
@@ -227,6 +228,8 @@ const Application = () => {
     setIsPerspective(v => !v)
   }
 
+  const onClickToggleWireframe = () => setIsWireframe(v => !v)
+
   const onClickToggleFullscreen = async () => {
     if (!document.fullscreenElement) {
       await containerRef.current?.requestFullscreen?.()
@@ -268,6 +271,8 @@ const Application = () => {
           onClickOpenWith={onClickOpenWith}
           isPerspective={isPerspective}
           onClickTogglePerspective={onClickTogglePerspective}
+          isWireframe={isWireframe}
+          onClickToggleWireframe={onClickToggleWireframe}
         />
         <Canvas
           style={{ width: '100%', height: '100%' }}
@@ -277,7 +282,7 @@ const Application = () => {
         >
           <Bed bedSize={settings.bedSize} cellSize={settings.bedGridCellSize} isVisible={settings.isBedVisible} color={settings.bedColor} />
           <Suspense fallback={<Loader bedSize={settings.bedSize} color={settings.modelColor} />}>
-            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} /> : <></>}
+            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} isWireframe={isWireframe} /> : <></>}
           </Suspense>
           <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} maxDistance={9000} minZoom={0.001} maxZoom={400} ref={orbitRef}/>
           <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} isPerspective={isPerspective} orbitRef={orbitRef} />
