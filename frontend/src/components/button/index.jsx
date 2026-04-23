@@ -2,9 +2,9 @@
 
 import style from "./style.module.css"
 
-const Button = ({ text, onClick, accessKey }) => {
+const Button = ({ text, onClick, accessKey, className = "" }) => {
   return (
-    <button className={style.buttonStandard} onClick={onClick} accessKey={accessKey}>{text}</button>
+    <button className={`${style.buttonStandard} ${className}`.trim()} onClick={onClick} accessKey={accessKey}>{text}</button>
   );
 };
 

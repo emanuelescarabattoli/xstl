@@ -47,6 +47,7 @@ const Application = () => {
   const [isControlsVisible, setIsControlsVisible] = useState(true)
   const [isPerspective, setIsPerspective] = useState(true)
   const [isWireframe, setIsWireframe] = useState(false)
+  const [isBoundingBoxVisible, setIsBoundingBoxVisible] = useState(false)
   const [isMeasureMode, setIsMeasureMode] = useState(false)
   const [measurePoints, setMeasurePoints] = useState([])
   const [snapshotScale, setSnapshotScale] = useState(1)
@@ -190,6 +191,7 @@ const Application = () => {
 
   const onClickPreviousFile = async () => {
     if (filePath) {
+      setMeasurePoints([])
       const previousFile = await window.electronAPI.getPreviousFile(filePath)
       if (previousFile) readFile(previousFile);
     }
@@ -197,6 +199,7 @@ const Application = () => {
 
   const onClickNextFile = async () => {
     if (filePath) {
+      setMeasurePoints([])
       const nextFile = await window.electronAPI.getNextFile(filePath)
       if (nextFile) readFile(nextFile);
     }
@@ -238,6 +241,8 @@ const Application = () => {
   }
 
   const onClickToggleWireframe = () => setIsWireframe(v => !v)
+
+  const onClickToggleBoundingBox = () => setIsBoundingBoxVisible(v => !v)
 
   const onClickToggleMeasureMode = () => {
     setIsMeasureMode(value => !value)
@@ -382,6 +387,8 @@ const Application = () => {
           onClickTogglePerspective={onClickTogglePerspective}
           isWireframe={isWireframe}
           onClickToggleWireframe={onClickToggleWireframe}
+          isBoundingBoxVisible={isBoundingBoxVisible}
+          onClickToggleBoundingBox={onClickToggleBoundingBox}
           isMeasureMode={isMeasureMode}
           measureDistance={measureDistance}
           onClickToggleMeasureMode={onClickToggleMeasureMode}
@@ -400,7 +407,7 @@ const Application = () => {
         >
           <Bed bedSize={settings.bedSize} cellSize={settings.bedGridCellSize} isVisible={settings.isBedVisible} color={settings.bedColor} />
           <Suspense fallback={<Loader bedSize={settings.bedSize} color={settings.modelColor} />}>
-            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} isWireframe={isWireframe} isMeasureMode={isMeasureMode} measurePoints={measurePoints} measureDistance={measureDistance} onAddMeasurePoint={onAddMeasurePoint} /> : <></>}
+            {file ? <Model key={filePath || file} file={file} color={settings.modelColor} isWireframe={isWireframe} isBoundingBoxVisible={isBoundingBoxVisible} isMeasureMode={isMeasureMode} measurePoints={measurePoints} measureDistance={measureDistance} onAddMeasurePoint={onAddMeasurePoint} /> : <></>}
           </Suspense>
           <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} maxDistance={9000} minZoom={0.001} maxZoom={400} ref={orbitRef}/>
           <Helpers cameraPosition={cameraPosition} isAxesVisible={settings.isAxesVisible} isPerspective={isPerspective} orbitRef={orbitRef} />

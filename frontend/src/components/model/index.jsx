@@ -1,6 +1,6 @@
 import { useFrame, useLoader, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
-import { Html, Line } from '@react-three/drei'
+import { Billboard, Line, Text } from '@react-three/drei'
 import * as THREE from 'three'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import ErrorBoundary from '../error-boundary';
@@ -40,7 +40,46 @@ const MeasurementPin = ({ position, color, pixelRadius = 6 }) => {
   )
 }
 
-const Model = ({ file, color, yOffset = 0, isWireframe = false, isMeasureMode = false, measurePoints = [], measureDistance = null, onAddMeasurePoint }) => {
+const FixedSizeBillboardLabel = ({ position, color, text, pixelHeight = 18 }) => {
+  const ref = useRef(null)
+  const { camera, size } = useThree()
+  const worldPositionRef = useRef(new THREE.Vector3())
+
+  useEffect(() => {
+    if (!ref.current) return
+    if (ref.current.material) {
+      ref.current.material.depthTest = false
+      ref.current.material.depthWrite = false
+      ref.current.material.renderOrder = 1000
+    }
+  }, [])
+
+  useFrame(() => {
+    if (!ref.current) return
+
+    ref.current.getWorldPosition(worldPositionRef.current)
+    const distance = camera.position.distanceTo(worldPositionRef.current)
+    const scale = getWorldRadiusForPixels(camera, distance, size.height, pixelHeight)
+    ref.current.scale.setScalar(Math.max(scale, 0.1))
+  })
+
+  return (
+    <Billboard ref={ref} position={position} follow>
+      <Text
+        color={color}
+        fontSize={1}
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.08}
+        outlineColor="#111111"
+      >
+        {text}
+      </Text>
+    </Billboard>
+  )
+}
+
+const Model = ({ file, color, yOffset = 0, isWireframe = false, isBoundingBoxVisible = false, isMeasureMode = false, measurePoints = [], measureDistance = null, onAddMeasurePoint }) => {
   const geom = useLoader(STLLoader, file)
   const geomRef = useRef();
 
@@ -56,6 +95,32 @@ const Model = ({ file, color, yOffset = 0, isWireframe = false, isMeasureMode = 
     if (!modelGeometry?.boundingBox) return 0;
     return modelGeometry.boundingBox.max.z - modelGeometry.boundingBox.min.z;
   }, [modelGeometry])
+
+  const modelSize = useMemo(() => {
+    if (!modelGeometry?.boundingBox) return null
+    const size = new THREE.Vector3()
+    modelGeometry.boundingBox.getSize(size)
+    return size
+  }, [modelGeometry])
+
+  const bboxPosition = useMemo(() => [0, modelHeight / 2 + yOffset, 0], [modelHeight, yOffset])
+
+  const bboxEdges = useMemo(() => {
+    if (!modelSize) return null
+    const boxGeometry = new THREE.BoxGeometry(modelSize.x, modelSize.y, modelSize.z)
+    return new THREE.EdgesGeometry(boxGeometry)
+  }, [modelSize])
+
+  const bboxLabelPositions = useMemo(() => {
+    if (!modelSize) return null
+
+    const offset = 8
+    return {
+      x: [0, -(modelSize.y / 2 + offset), modelSize.z / 2],
+      y: [modelSize.x / 2, 0, modelSize.z / 2 + offset],
+      z: [modelSize.x / 2 + offset, modelSize.y / 2, 0]
+    }
+  }, [modelSize])
 
   useEffect(() => {
     if (geomRef.current.rotation.x === 0) {
@@ -94,6 +159,32 @@ const Model = ({ file, color, yOffset = 0, isWireframe = false, isMeasureMode = 
           wireframe={isWireframe}
         />
       </mesh>
+      {isBoundingBoxVisible && modelSize && bboxEdges ? (
+        <group position={bboxPosition} rotation={[-Math.PI / 2, 0, 0]}>
+          <lineSegments geometry={bboxEdges}>
+            <lineBasicMaterial color={measurementColor} toneMapped={false} />
+          </lineSegments>
+          {bboxLabelPositions ? (
+            <>
+              <FixedSizeBillboardLabel
+                position={bboxLabelPositions.x}
+                color={measurementColor}
+                text={`X: ${modelSize.x.toFixed(2)} mm`}
+              />
+              <FixedSizeBillboardLabel
+                position={bboxLabelPositions.y}
+                color={measurementColor}
+                text={`Y: ${modelSize.y.toFixed(2)} mm`}
+              />
+              <FixedSizeBillboardLabel
+                position={bboxLabelPositions.z}
+                color={measurementColor}
+                text={`Z: ${modelSize.z.toFixed(2)} mm`}
+              />
+            </>
+          ) : null}
+        </group>
+      ) : null}
       {measurementVectors.map((point, index) => (
         <MeasurementPin key={`measure-point-${index}`} position={point} color={measurementColor} />
       ))}
@@ -101,11 +192,11 @@ const Model = ({ file, color, yOffset = 0, isWireframe = false, isMeasureMode = 
         <>
           <Line points={measurementVectors} color={measurementColor} lineWidth={1.5} />
           {measurementMidpoint ? (
-            <Html position={measurementMidpoint} center>
-              <div style={{ background: "#111111dd", color: "#f0f0f0", padding: "4px", borderRadius: "4px", fontSize: "12px", border: "1px solid #555", whiteSpace: "nowrap" }}>
-                {measureDistance?.toFixed(2)} mm
-              </div>
-            </Html>
+            <FixedSizeBillboardLabel
+              position={measurementMidpoint.toArray()}
+              color={measurementColor}
+              text={`${measureDistance?.toFixed(2)} mm`}
+            />
           ) : null}
         </>
       ) : null}
