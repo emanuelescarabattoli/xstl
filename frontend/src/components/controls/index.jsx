@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-access-key */
 
 import style from "./style.module.css"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Button from "../button"
 import Tooltip from "../tooltip"
 import Icon from "../icon"
@@ -41,34 +41,30 @@ const Controls = ({
   const [isMeasureOptionsVisible, setIsMeasureOptionsVisible] = useState(false)
 
   const onClickToggleMeasureOptions = () => {
-    setIsMeasureOptionsVisible(previous => {
-      const next = !previous
-
-      if (next) {
-        setIsSnapshotOptionsVisible(false)
-      }
-
-      if (next !== isMeasureMode) {
-        onClickToggleMeasureMode()
-      }
-
-      return next
-    })
+    setIsMeasureOptionsVisible(previous => !previous)
   }
 
+  // Sync measure mode with measure options visibility
+  useEffect(() => {
+    if (isMeasureOptionsVisible && !isMeasureMode) {
+      onClickToggleMeasureMode()
+    } else if (!isMeasureOptionsVisible && isMeasureMode) {
+      onClickToggleMeasureMode()
+    }
+  }, [isMeasureOptionsVisible]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // When snapshot options open, close measure options and disable measure mode
+  useEffect(() => {
+    if (isSnapshotOptionsVisible && isMeasureOptionsVisible) {
+      setIsMeasureOptionsVisible(false)
+    }
+    if (isSnapshotOptionsVisible && isMeasureMode) {
+      onClickToggleMeasureMode()
+    }
+  }, [isSnapshotOptionsVisible]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const onClickToggleSnapshotOptions = () => {
-    setIsSnapshotOptionsVisible(previous => {
-      const next = !previous
-
-      if (next && isMeasureOptionsVisible) {
-        setIsMeasureOptionsVisible(false)
-        if (isMeasureMode) {
-          onClickToggleMeasureMode()
-        }
-      }
-
-      return next
-    })
+    setIsSnapshotOptionsVisible(previous => !previous)
   }
 
   return (

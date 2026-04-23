@@ -360,7 +360,7 @@ const Application = () => {
   }, [measurePoints])
 
   return (
-    <div ref={containerRef} className={`${style.mainWrapper} ${shouldHideCursor ? style.hideCursor : ""}`}>
+    <div ref={containerRef} className={`${style.mainWrapper} ${shouldHideCursor ? style.hideCursor : ""} ${isMeasureMode ? style.measureCursor : ""}`}>
       <ErrorBoundary>
         <Controls
           filePath={filePath}

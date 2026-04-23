@@ -9,3 +9,7 @@
 .hideCursor {
   cursor: none;
 }
+
+.measureCursor {
+  cursor: crosshair;
+}
