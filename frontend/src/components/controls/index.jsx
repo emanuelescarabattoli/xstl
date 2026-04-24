@@ -142,7 +142,7 @@ const Controls = ({
       </div>
 
       {orderedToolStack.length > 0 ? (
-        <div className={style.toolStack}>
+        <div className={`${style.toolStack} ${isVisible ? style.visible : style.hidden}`}>
           {orderedToolStack.map(toolName => {
             if (toolName === "measure") {
               return (

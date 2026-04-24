@@ -42,20 +42,49 @@ const MeasurementPin = ({ position, color, pixelRadius = 6 }) => {
 
 const FixedSizeBillboardLabel = ({ position, color, text, pixelHeight = 18 }) => {
   const ref = useRef(null)
+  const textRef = useRef(null)
+  const hasAppliedForegroundRef = useRef(false)
   const { camera, size } = useThree()
   const worldPositionRef = useRef(new THREE.Vector3())
 
+  const applyForegroundRendering = object => {
+    if (!object) return false
+
+    let hasMesh = false
+    object.renderOrder = 10000
+    object.traverse(node => {
+      if (!node.isMesh) return
+      hasMesh = true
+      node.renderOrder = 10000
+      node.frustumCulled = false
+
+      const materials = Array.isArray(node.material) ? node.material : [node.material]
+      materials.filter(Boolean).forEach(material => {
+        material.depthTest = false
+        material.depthWrite = false
+        material.depthFunc = THREE.AlwaysDepth
+        material.transparent = true
+        material.needsUpdate = true
+      })
+    })
+
+    return hasMesh
+  }
+
   useEffect(() => {
-    if (!ref.current) return
-    if (ref.current.material) {
-      ref.current.material.depthTest = false
-      ref.current.material.depthWrite = false
-      ref.current.material.renderOrder = 1000
-    }
-  }, [])
+    hasAppliedForegroundRef.current = false
+    applyForegroundRendering(textRef.current)
+  }, [text, color])
 
   useFrame(() => {
     if (!ref.current) return
+
+    if (!hasAppliedForegroundRef.current) {
+      const hasMesh = applyForegroundRendering(textRef.current)
+      if (hasMesh) {
+        hasAppliedForegroundRef.current = true
+      }
+    }
 
     ref.current.getWorldPosition(worldPositionRef.current)
     const distance = camera.position.distanceTo(worldPositionRef.current)
@@ -66,10 +95,14 @@ const FixedSizeBillboardLabel = ({ position, color, text, pixelHeight = 18 }) =>
   return (
     <Billboard ref={ref} position={position} follow>
       <Text
+        ref={textRef}
         color={color}
         fontSize={1}
         anchorX="center"
         anchorY="middle"
+        depthTest={false}
+        depthWrite={false}
+        renderOrder={10000}
         outlineWidth={0.08}
         outlineColor="#111111"
       >
